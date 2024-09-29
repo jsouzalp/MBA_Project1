@@ -1,0 +1,5 @@
+{
+  "DatabaseSettings": {
+    "ConnectionStringPrincipal": "Data Source=FABRICA-JSOUZA\\SQLEXPRESS;Initial Catalog=BLOG_DV;Integrated Security=True;Application Name=Blog.API;TrustServerCertificate=True;"
+  }
+}
