@@ -1,21 +1,60 @@
 ﻿using Blog.Bases;
 using Blog.Entities.Authors;
+using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
 using Blog.Repositories.Entities;
 using Blog.Repositories.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System.Transactions;
 
 namespace Blog.Repositories.Implementations
 {
     public partial class AuthorRepository : IAuthorRepository
     {
+        // TODO :: Colocar o tratamento de exception em um extension e com códigos de erros via translate resources
+
         private readonly BlogDbContext _context;
         public AuthorRepository(BlogDbContext context)
         {
             _context = context;
         }
 
-        public async Task<RepositoryOutput<Author>> InsertAuthorAsync(RepositoryInput<Author> input)
+        public async Task<RepositoryOutput<Author>> GetAuthorByIdAsync(Guid id)
+        {
+            RepositoryOutput<Author> result = new();
+            try
+            {
+                Author author = await _context.Authors
+                    .Include(x => x.Posts).ThenInclude(x => x.Comments).ThenInclude(x => x.CommentAuthor)
+                    .FirstOrDefaultAsync(x => x.Id == id);
+                if (author != null)
+                {
+                    result.Message = $"Autor {author.Name} localizado com sucesso";
+                    result.Output = author;
+                }
+                else
+                {
+                    result.Message = $"Autor de ID {id} não localizado";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Errors = new List<ErrorBase>()
+                {
+                    new ErrorBase()
+                    {
+                        Code = "1000",
+                        Message = $"Erro localizando o autor de ID {id}",
+                        InternalMessage = ex.ToString()
+                    }
+                };
+            }
+
+            return result;
+        }
+
+        public async Task<RepositoryOutput<Author>> CreateAuthorAsync(RepositoryInput<Author> input)
         {
             RepositoryOutput<Author> result = new();
             try
@@ -27,13 +66,12 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                // TODO :: Colocar o tratamento de exception em um extension e com códigos de erros via translate resources
                 result.Errors = new List<ErrorBase>()
                 {
                     new ErrorBase()
                     {
                         Code = "1000",
-                        Message = "Erro criando um Autor",
+                        Message = $"Erro criando o autor {input.Input.Name}",
                         InternalMessage = ex.ToString()
                     }
                 };
@@ -50,17 +88,18 @@ namespace Blog.Repositories.Implementations
                 input.Input.FillKeys();
                 _context.Authors.Update(input.Input);
                 _ = await _context.SaveChangesAsync();
+
+                result.Message = $"Autor {input.Input.Name} atualizado com sucesso";
                 result.Output = input.Input;
             }
             catch (Exception ex)
             {
-                // TODO :: Colocar o tratamento de exception em um extension e com códigos de erros via translate resources
                 result.Errors = new List<ErrorBase>()
                 {
                     new ErrorBase()
                     {
                         Code = "1000",
-                        Message = "Erro atualizando um Autor",
+                        Message = $"Erro atualizando o autor {input.Input.Name}",
                         InternalMessage = ex.ToString()
                     }
                 };
@@ -69,25 +108,47 @@ namespace Blog.Repositories.Implementations
             return result;
         }
 
-        public async Task<RepositoryOutput<Author>> RemoveAuthorAsync(RepositoryInput<Author> input)
+        public async Task<RepositoryOutput<bool>> RemoveAuthorAsync(Guid id)
         {
-            RepositoryOutput<Author> result = new();
+            RepositoryOutput<bool> result = new();
             try
             {
-                input.Input.FillKeys();
-                _context.Authors.Remove(input.Input);
-                _ = await _context.SaveChangesAsync();
-                result.Output = input.Input;
+                Author author = await _context.Authors
+                    .Include(x => x.Posts)
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (author != null)
+                {
+                    using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    {
+                        foreach (Post post in author.Posts)
+                        {
+                            _ = await _context.Comments.Where(x => x.PostId == post.Id).ExecuteDeleteAsync();
+                            _ = _context.Posts.Remove(post);
+                        }
+
+                        _ = _context.Authors.Remove(author);
+                        _ = await _context.SaveChangesAsync();
+
+                        transaction.Complete();
+                        result.Message = $"Autor de ID {id} removido com sucesso";
+                        result.Output = true;
+                    }
+                }
+                else
+                {
+                    result.Output = false;
+                    result.Message = $"Autor de ID {id} não encontrado";
+                }
             }
             catch (Exception ex)
             {
-                // TODO :: Colocar o tratamento de exception em um extension e com códigos de erros via translate resources
                 result.Errors = new List<ErrorBase>()
                 {
                     new ErrorBase()
                     {
                         Code = "1000",
-                        Message = "Erro removendo um Autor",
+                        Message = $"Erro removendo o autor de ID {id}",
                         InternalMessage = ex.ToString()
                     }
                 };

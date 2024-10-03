@@ -13,7 +13,7 @@ namespace Blog.Repositories.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services, DatabaseSettings databaseSettings)
         {
             services.AddDbContext<BlogDbContext>(o => o.UseSqlServer(databaseSettings.ConnectionStringPrincipal));            
-            services.TryAddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
             return services;
         }
     }

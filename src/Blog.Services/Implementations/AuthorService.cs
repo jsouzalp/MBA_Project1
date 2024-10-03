@@ -1,5 +1,7 @@
-﻿using Blog.Bases.Services;
+﻿using AutoMapper;
+using Blog.Bases.Services;
 using Blog.Entities.Authors;
+using Blog.Repositories.Abstractions;
 using Blog.Repositories.Entities;
 using Blog.Repositories.Implementations;
 using Blog.Services.Abstractions;
@@ -11,31 +13,43 @@ namespace Blog.Services.Implementations
 {
     public class AuthorService : IAuthorService
     {
-        private readonly AuthorRepository _repository;
-        private readonly IValidationFactory<Author> _validation;
+        private readonly IAuthorRepository _repository;
+        private readonly IValidationFactory<AuthorInput> _authorValidation;
+        private readonly IMapper _mapper;
 
-        public AuthorService(AuthorRepository repository)
+        public AuthorService(IAuthorRepository repository, 
+            IValidationFactory<AuthorInput> authorValidation, 
+            IMapper mapper)
         {
             _repository = repository;
+            _authorValidation = authorValidation;
+            _mapper = mapper;
         }
 
-        public async Task<ServiceOutput<Author>> InsertAuthorAsync(ServiceInput<Author> input)
+        public async Task<ServiceOutput<AuthorOutput>> GetAuthorByIdAsync(Guid id)
         {
-            ServiceOutput<Author> result = new();
-            ValidationOutput validation = await _validation.ValidateAsync(input.Input);
+            RepositoryOutput<Author> repositoryResult = await _repository.GetAuthorByIdAsync(id);
+            return new ServiceOutput<AuthorOutput>()
+            {
+                Message = repositoryResult.Message,
+                Output = _mapper.Map<AuthorOutput>(repositoryResult.Output),
+                Errors = repositoryResult.Errors
+            };
+        }
+
+        public async Task<ServiceOutput<AuthorOutput>> CreateAuthorAsync(ServiceInput<AuthorInput> input)
+        {
+            ServiceOutput<AuthorOutput> result = new();
+            ValidationOutput validation = await _authorValidation.ValidateAsync(input.Input);
+
             if (validation.Success)
             {
-                RepositoryOutput<Author> repositoryResult = await _repository.InsertAuthorAsync(new RepositoryInput<Author>()
+                RepositoryOutput<Author> repositoryResult = await _repository.CreateAuthorAsync(new RepositoryInput<Author>()
                 {
-                    Input = new Author()
-                    {
-                        Id = input.Input.Id,
-                        Name = input.Input.Name,
-                        Posts = input.Input.Posts
-                    }
+                    Input = _mapper.Map<Author>(input.Input)
                 });
                 result.Message = repositoryResult.Message;
-                result.Output = repositoryResult.Output;
+                result.Output = _mapper.Map<AuthorOutput>(repositoryResult.Output);
                 result.Errors = repositoryResult.Errors;
             }
             else
@@ -46,23 +60,18 @@ namespace Blog.Services.Implementations
             return result;
         }
 
-        public async Task<ServiceOutput<Author>> RemoveAuthorAsync(ServiceInput<Author> input)
+        public async Task<ServiceOutput<AuthorOutput>> UpdateAuthorAsync(ServiceInput<AuthorInput> input)
         {
-            ServiceOutput<Author> result = new();
-            ValidationOutput validation = await _validation.ValidateAsync(input.Input);
+            ServiceOutput<AuthorOutput> result = new();
+            ValidationOutput validation = await _authorValidation.ValidateAsync(input.Input);
             if (validation.Success)
             {
-                RepositoryOutput<Author> repositoryResult = await _repository.InsertAuthorAsync(new RepositoryInput<Author>()
+                RepositoryOutput<Author> repositoryResult = await _repository.UpdateAuthorAsync(new RepositoryInput<Author>()
                 {
-                    Input = new Author()
-                    {
-                        Id = input.Input.Id,
-                        Name = input.Input.Name,
-                        Posts = input.Input.Posts
-                    }
+                    Input = _mapper.Map<Author>(input.Input)
                 });
                 result.Message = repositoryResult.Message;
-                result.Output = repositoryResult.Output;
+                result.Output = _mapper.Map<AuthorOutput>(repositoryResult.Output);
                 result.Errors = repositoryResult.Errors;
             }
             else
@@ -73,9 +82,16 @@ namespace Blog.Services.Implementations
             return result;
         }
 
-        public async Task<ServiceOutput<Author>> UpdateAuthorAsync(ServiceInput<Author> input)
+        public async Task<ServiceOutput<bool>> RemoveAuthorAsync(Guid id)
         {
-            throw new NotImplementedException();
+            ServiceOutput<bool> result = new();
+
+            RepositoryOutput<bool> repositoryResult = await _repository.RemoveAuthorAsync(id);
+            result.Message = repositoryResult.Message;
+            result.Output = repositoryResult.Output;
+            result.Errors = repositoryResult.Errors;
+
+            return result;
         }
     }
 }

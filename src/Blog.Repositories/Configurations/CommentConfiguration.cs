@@ -42,6 +42,17 @@ namespace Blog.Repositories.Configurations
             #endregion
 
             #region Relationships
+            builder.HasOne(c => c.Post)
+               .WithMany(p => p.Comments)
+               .HasForeignKey(c => c.PostId)
+               .HasConstraintName("FK_TB_COMMENT_001")
+               .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.CommentAuthor)
+                .WithMany(x => x.Comments)
+                .HasForeignKey(x => x.CommentAuthorId)
+                .HasConstraintName("FK_TB_COMMENT_002")
+                .OnDelete(DeleteBehavior.NoAction);
             #endregion
         }
     }

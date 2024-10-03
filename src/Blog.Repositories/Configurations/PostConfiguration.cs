@@ -50,6 +50,7 @@ namespace Blog.Repositories.Configurations
             builder.HasOne(x => x.Author)
                 .WithMany(x => x.Posts)
                 .HasForeignKey(x => x.AuthorId)
+                .HasConstraintName("FK_TB_POST_002")
                 .OnDelete(DeleteBehavior.NoAction);
             #endregion
         }

@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Repositories", "Blog.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Validations", "Blog.Validations\Blog.Validations.csproj", "{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.AutoMapper", "Blog.AutoMapper\Blog.AutoMapper.csproj", "{AB5326D6-8D92-4B8A-AF44-19F388D1322F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

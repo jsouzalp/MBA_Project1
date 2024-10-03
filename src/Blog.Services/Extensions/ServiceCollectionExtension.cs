@@ -15,9 +15,9 @@ namespace Blog.Services.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services, DatabaseSettings databaseSettings)
         {
             services.AddValidationFactory();
-            services.AddValidatorsFromAssemblyContaining<AuthorInsertValidation>();
+            services.AddValidatorsFromAssemblyContaining<AuthorValidation>();
             services.AddRepositories(databaseSettings);
-            services.TryAddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IAuthorService, AuthorService>();
             return services;
         }
     }

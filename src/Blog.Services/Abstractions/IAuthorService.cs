@@ -6,8 +6,9 @@ namespace Blog.Services.Abstractions
 {
     public interface IAuthorService
     {
-        Task<ServiceOutput<Author>> InsertAuthorAsync(ServiceInput<Author> input);
-        Task<ServiceOutput<Author>> UpdateAuthorAsync(ServiceInput<Author> input);
-        Task<ServiceOutput<Author>> RemoveAuthorAsync(ServiceInput<Author> input);
+        Task<ServiceOutput<AuthorOutput>> GetAuthorByIdAsync(Guid id);
+        Task<ServiceOutput<AuthorOutput>> CreateAuthorAsync(ServiceInput<AuthorInput> input);
+        Task<ServiceOutput<AuthorOutput>> UpdateAuthorAsync(ServiceInput<AuthorInput> input);
+        Task<ServiceOutput<bool>> RemoveAuthorAsync(Guid id);
     }
 }

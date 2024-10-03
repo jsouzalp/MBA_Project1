@@ -1,4 +1,5 @@
 using Blog.Api.Helpers;
+using Blog.AutoMapper.Extensions;
 using Blog.Bases.Settings;
 using Blog.Services.Extensions;
 
@@ -22,6 +23,7 @@ internal class Program
         #endregion
 
         #region Extended Services configuration
+        builder.Services.AddMappings();
         builder.Services.AddServices(databaseSettings);
         #endregion
 
@@ -35,6 +37,7 @@ internal class Program
         {
             options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

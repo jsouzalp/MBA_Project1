@@ -9,7 +9,7 @@ namespace Blog.Validations.Extensions
     {
         public static IServiceCollection AddValidationFactory(this IServiceCollection services)
         {
-            services.TryAddSingleton(typeof(IValidationFactory<,>), typeof(ValidationFactory<,>));
+            services.AddScoped(typeof(IValidationFactory<>), typeof(ValidationFactory<>));
             return services;
         }
     }

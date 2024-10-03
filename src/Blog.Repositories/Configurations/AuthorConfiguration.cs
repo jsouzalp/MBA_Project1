@@ -31,7 +31,7 @@ namespace Blog.Repositories.Configurations
                 .WithOne(x => x.Author)
                 .HasForeignKey(x => x.AuthorId)
                 .HasConstraintName("FK_TB_AUTHOR_001")
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
     }

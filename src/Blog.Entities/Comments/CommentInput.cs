@@ -2,9 +2,9 @@
 {
     public class CommentInput
     {
+        public Guid Id { get; set; }
         public Guid PostId { get; set; }
-        public Guid AuthorId { get; set; }
-        public Guid ComentAuthorId { get; set; }
+        public Guid CommentAuthorId { get; set; }
         public string Message { get; set; }
     }
 }

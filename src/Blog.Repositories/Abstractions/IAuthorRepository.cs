@@ -5,8 +5,9 @@ namespace Blog.Repositories.Abstractions
 {
     public interface IAuthorRepository
     {
-        Task<RepositoryOutput<Author>> InsertAuthorAsync(RepositoryInput<Author> input);
+        Task<RepositoryOutput<Author>> GetAuthorByIdAsync(Guid id);
+        Task<RepositoryOutput<Author>> CreateAuthorAsync(RepositoryInput<Author> input);
         Task<RepositoryOutput<Author>> UpdateAuthorAsync(RepositoryInput<Author> input);
-        Task<RepositoryOutput<Author>> RemoveAuthorAsync(RepositoryInput<Author> input);
+        Task<RepositoryOutput<bool>> RemoveAuthorAsync(Guid id);
     }
 }
