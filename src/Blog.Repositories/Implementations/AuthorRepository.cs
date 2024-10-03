@@ -5,6 +5,8 @@ using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
 using Blog.Repositories.Entities;
 using Blog.Repositories.Extensions;
+using Blog.Translations.Abstractions;
+using Blog.Translations.Constants;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 
@@ -15,9 +17,12 @@ namespace Blog.Repositories.Implementations
         // TODO :: Colocar o tratamento de exception em um extension e com códigos de erros via translate resources
 
         private readonly BlogDbContext _context;
-        public AuthorRepository(BlogDbContext context)
+        private readonly ITranslationResource _translateResource;
+
+        public AuthorRepository(BlogDbContext context, ITranslationResource translateResource)
         {
             _context = context;
+            _translateResource = translateResource;
         }
 
         public async Task<RepositoryOutput<Author>> GetAuthorByIdAsync(Guid id)
@@ -30,7 +35,7 @@ namespace Blog.Repositories.Implementations
                     .FirstOrDefaultAsync(x => x.Id == id);
                 if (author != null)
                 {
-                    result.Message = $"Autor {author.Name} localizado com sucesso";
+                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorFound), author.Name);
                     result.Output = author;
                 }
                 else

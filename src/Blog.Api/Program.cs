@@ -2,6 +2,7 @@ using Blog.Api.Helpers;
 using Blog.AutoMapper.Extensions;
 using Blog.Bases.Settings;
 using Blog.Services.Extensions;
+using Blog.Translations.Extensions;
 
 internal class Program
 {
@@ -23,7 +24,9 @@ internal class Program
         #endregion
 
         #region Extended Services configuration
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddMappings();
+        builder.Services.AddTranslation();
         builder.Services.AddServices(databaseSettings);
         #endregion
 

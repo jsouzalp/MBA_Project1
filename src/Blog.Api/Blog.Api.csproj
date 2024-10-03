@@ -18,6 +18,7 @@
     <ProjectReference Include="..\Blog.AutoMapper\Blog.AutoMapper.csproj" />
     <ProjectReference Include="..\Blog.Bases\Blog.Bases.csproj" />
     <ProjectReference Include="..\Blog.Services\Blog.Services.csproj" />
+    <ProjectReference Include="..\Blog.Translations\Blog.Translations.csproj" />
   </ItemGroup>
 
 </Project>
