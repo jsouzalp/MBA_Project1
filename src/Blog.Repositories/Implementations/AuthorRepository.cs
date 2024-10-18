@@ -31,7 +31,7 @@ namespace Blog.Repositories.Implementations
             try
             {
                 result.Output = await _context.Authors
-                    .Include(x => x.Posts).ThenInclude(x => x.Comments).ThenInclude(x => x.CommentAuthor)
+                    //.Include(x => x.Posts).ThenInclude(x => x.Comments).ThenInclude(x => x.CommentAuthor)
                     .FirstOrDefaultAsync(x => x.Id == id);
                 if (result.Output != null)
                 {

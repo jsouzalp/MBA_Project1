@@ -25,13 +25,13 @@ namespace Blog.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ServiceOutput<AuthorOutput>> CreateAuthorAsync(ServiceInput<AuthorInput> input)
+        public async Task<ServiceOutput<AuthorOutput>> CreateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
             return await _authorService.CreateAuthorAsync(input);
         }
 
         [HttpPut]
-        public async Task<ServiceOutput<AuthorOutput>> UpdateAuthorAsync(ServiceInput<AuthorInput> input)
+        public async Task<ServiceOutput<AuthorOutput>> UpdateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
             return await _authorService.UpdateAuthorAsync(input);
         }

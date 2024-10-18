@@ -7,6 +7,7 @@ using Blog.Services.Abstractions;
 using Blog.Services.Entities;
 using Blog.Validations;
 using Blog.Validations.Abstractions;
+using System.Collections.Generic;
 
 namespace Blog.Services.Implementations
 {
@@ -18,7 +19,7 @@ namespace Blog.Services.Implementations
         private readonly IValidationFactory<Guid> _idValidation;
         private readonly IMapper _mapper;
 
-        public PostService(IPostRepository repository, 
+        public PostService(IPostRepository repository,
             IValidationFactory<PostInput> postValidation,
             IValidationFactory<FilterPostInput> filterPostValidation,
             IValidationFactory<Guid> idValidation,
@@ -31,19 +32,19 @@ namespace Blog.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<ServiceOutput<PostOutput>> FilterPostsAsync(ServiceInput<FilterPostInput> input)
+        public async Task<ServiceOutput<IEnumerable<PostOutput>>> FilterPostsAsync(FilterPostInput input)
         {
-            ServiceOutput<PostOutput> result = new();
-            ValidationOutput validation = await _filterPostValidation.ValidateIdAsync(input.Input);
+            ServiceOutput<IEnumerable<PostOutput>> result = new();
+            ValidationOutput validation = await _filterPostValidation.ValidateIdAsync(input);
 
             if (validation.Success)
             {
-                RepositoryOutput<Post> repositoryResult = await _repository.FilterPostsAsync(new RepositoryInput<FilterPostInput>()
+                RepositoryOutput<IEnumerable<Post>> repositoryResult = await _repository.FilterPostsAsync(new RepositoryInput<FilterPostInput>()
                 {
-                    Input = input.Input
+                    Input = input
                 });
                 result.Message = repositoryResult.Message;
-                result.Output = _mapper.Map<PostOutput>(repositoryResult.Output);
+                result.Output = _mapper.Map<IEnumerable<PostOutput>>(repositoryResult.Output);
                 result.Errors = repositoryResult.Errors;
             }
             else

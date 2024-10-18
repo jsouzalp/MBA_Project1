@@ -24,18 +24,26 @@ namespace Blog.Repositories.Implementations
             _translateResource = translateResource;
         }
 
-        public async Task<RepositoryOutput<Post>> FilterPostsAsync(RepositoryInput<FilterPostInput> input)
+        public async Task<RepositoryOutput<IEnumerable<Post>>> FilterPostsAsync(RepositoryInput<FilterPostInput> input)
         {
-            RepositoryOutput<Post> result = new();
+            RepositoryOutput<IEnumerable<Post>> result = new();
             try
             {
                 result.Output = await _context.Posts
+                    .Where(x => x.AuthorId == input.Input.AuthorId)
                     .Include(x => x.Comments).ThenInclude(x => x.CommentAuthor)
                     .Skip(input.Input.Skip)
                     .Take(input.Input.RecordsPerPage)
-                    .FirstOrDefaultAsync(x => x.AuthorId == input.Input.AuthorId);
+                    .OrderByDescending(x => x.Date)
+                    .ToListAsync();
                 if (result.Output != null)
                 {
+                    foreach (Post post in result.Output)
+                    {
+                        post.Comments = post.Comments
+                            .OrderByDescending(x => x.Date)
+                            .ToList();
+                    }
                     result.Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryFilterSuccess), input.Input.AuthorId, input.Input.Page);
                 }
                 else
