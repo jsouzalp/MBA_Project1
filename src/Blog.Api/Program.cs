@@ -31,6 +31,14 @@ internal class Program
         #endregion
 
         builder.Services.AddControllers();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigin",
+                builder => builder
+                    .WithOrigins("*")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+        });
         //builder.Services.AddControllers(options =>
         //{
         //    options.Filters.Add<LoggingExceptionFilter>();

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Blog.Bases\Blog.Bases.csproj" />
     <ProjectReference Include="..\Blog.Entities\Blog.Entities.csproj" />
+    <ProjectReference Include="..\Blog.Translations\Blog.Translations.csproj" />
   </ItemGroup>
 
 </Project>

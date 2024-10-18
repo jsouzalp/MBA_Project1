@@ -1,20 +1,22 @@
 ﻿using Blog.Entities.Authors;
 using Blog.Entities.Posts;
+using Blog.Translations.Abstractions;
+using Blog.Translations.Constants;
 using FluentValidation;
 
 namespace Blog.Validations.Validations.AuthorValidation
 {
     public class AuthorValidation : AbstractValidator<AuthorInput>
     {
-        public AuthorValidation()
+        public AuthorValidation(ITranslationResource translateResource)
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .WithErrorCode("2000")
-                .WithMessage("Nome não pode ser vazio")
+                .WithErrorCode(translateResource.GetCodeResource(AuthorConstant.ValidationsAuthorEmptyName))
+                .WithMessage(translateResource.GetResource(AuthorConstant.ValidationsAuthorEmptyName))
                 .NotNull()
-                .WithErrorCode("2010")
-                .WithMessage("Nome não pode ser nulo");
+                .WithErrorCode(translateResource.GetCodeResource(AuthorConstant.ValidationsAuthorNullName))
+                .WithMessage(translateResource.GetResource(AuthorConstant.ValidationsAuthorNullName));
 
 
             RuleFor(x => x.Posts)
@@ -22,16 +24,16 @@ namespace Blog.Validations.Validations.AuthorValidation
                 {
                     return !posts?.Any(x => string.IsNullOrWhiteSpace(x.Title)) ?? true;
                 })
-                .WithErrorCode("2020")
-                .WithMessage("Postagens possui título não preenchido");
+                .WithErrorCode(translateResource.GetCodeResource(AuthorConstant.ValidationsAuthorPostWithoutTitle))
+                .WithMessage(translateResource.GetResource(AuthorConstant.ValidationsAuthorPostWithoutTitle));
 
             RuleFor(x => x.Posts)
                 .Must(delegate (ICollection<PostInput> posts)
                 {
                     return !posts?.Any(x => string.IsNullOrWhiteSpace(x.Message)) ?? true;
                 })
-                .WithErrorCode("2030")
-                .WithMessage("Postagens possui mensagem não preenchida");
+                .WithErrorCode(translateResource.GetCodeResource(AuthorConstant.ValidationsAuthorPostWithoutMessage))
+                .WithMessage(translateResource.GetResource(AuthorConstant.ValidationsAuthorPostWithoutMessage));
         }
     }
 }

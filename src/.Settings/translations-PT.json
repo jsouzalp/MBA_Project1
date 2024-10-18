@@ -1,0 +1,28 @@
+﻿{
+  "Autor": {
+    "Validations": {
+      "IdEmpty": "ID não pode ser vazio",
+      "EmptyName": "Nome não pode ser vazio",
+      "NullName": "Nome não pode ser nulo",
+      "PostWithoutTitle": "Postagem(ns) possui título(s) não preenchido(s)",
+      "PostWithoutMessage": "Postagem(ns) possui mensagem(ns) não preenchida(s)"
+    },
+    "Repository": {
+      "Info": {
+        "AuthorFound": "Autor {0} localizado com sucesso",
+        "AuthorCreated": "Autor {0} criado com sucesso",
+        "AuthorUpdated": "Autor {0} atualizado com sucesso",
+        "AuthorRemoved": "Autor {0} removido com sucesso"
+      },
+      "Warning": {
+        "AuthorNotFound": "Autor {0} não localizado"
+      },
+      "Error": {
+        "GetAuthorError": "Erro ao obter Autor de ID {0}",
+        "InsertAuthorError": "Erro ao criar o Autor {0}",
+        "UpdateAuthorError": "Erro ao atualizar o Autor {0}",
+        "RemoveAuthorError": "Erro ao remover o Autor {0}"
+      }
+    }
+  }
+}

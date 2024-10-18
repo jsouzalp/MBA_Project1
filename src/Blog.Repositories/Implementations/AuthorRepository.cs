@@ -14,7 +14,7 @@ namespace Blog.Repositories.Implementations
 {
     public partial class AuthorRepository : IAuthorRepository
     {
-        // TODO :: Colocar o tratamento de exception em um extension e com códigos de erros via translate resources
+        // TODO :: Colocar o tratamento de exception em um extension
 
         private readonly BlogDbContext _context;
         private readonly ITranslationResource _translateResource;
@@ -40,7 +40,7 @@ namespace Blog.Repositories.Implementations
                 }
                 else
                 {
-                    result.Message = $"Autor de ID {id} não localizado";
+                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorNotFound), id);
                 }
             }
             catch (Exception ex)
@@ -49,8 +49,8 @@ namespace Blog.Repositories.Implementations
                 {
                     new ErrorBase()
                     {
-                        Code = "1000",
-                        Message = $"Erro localizando o autor de ID {id}",
+                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryGetAuthorError),
+                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryGetAuthorError), id),
                         InternalMessage = ex.ToString()
                     }
                 };
@@ -67,6 +67,7 @@ namespace Blog.Repositories.Implementations
                 input.Input.FillKeys();
                 await _context.Authors.AddAsync(input.Input);
                 _ = await _context.SaveChangesAsync();
+                result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorCreated), input.Input.Name);
                 result.Output = input.Input;
             }
             catch (Exception ex)
@@ -75,8 +76,8 @@ namespace Blog.Repositories.Implementations
                 {
                     new ErrorBase()
                     {
-                        Code = "1000",
-                        Message = $"Erro criando o autor {input.Input.Name}",
+                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryInsertAuthorError),
+                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryInsertAuthorError), input.Input.Name),
                         InternalMessage = ex.ToString()
                     }
                 };
@@ -90,12 +91,21 @@ namespace Blog.Repositories.Implementations
             RepositoryOutput<Author> result = new();
             try
             {
-                input.Input.FillKeys();
-                _context.Authors.Update(input.Input);
-                _ = await _context.SaveChangesAsync();
+                Author author = await _context.Authors.FirstOrDefaultAsync(x => x.Id == input.Input.Id);
 
-                result.Message = $"Autor {input.Input.Name} atualizado com sucesso";
-                result.Output = input.Input;
+                if (author != null)
+                {
+                    input.Input.FillKeys();
+                    _context.Authors.Update(input.Input);
+                    _ = await _context.SaveChangesAsync();
+                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorUpdated), input.Input.Name);
+                    result.Output = input.Input;
+                }
+                else
+                {
+                    result.Output = input.Input;
+                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorNotFound), input.Input.Id);
+                }
             }
             catch (Exception ex)
             {
@@ -103,8 +113,8 @@ namespace Blog.Repositories.Implementations
                 {
                     new ErrorBase()
                     {
-                        Code = "1000",
-                        Message = $"Erro atualizando o autor {input.Input.Name}",
+                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryUpdateAuthorError),
+                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryUpdateAuthorError), input.Input.Name),
                         InternalMessage = ex.ToString()
                     }
                 };
@@ -136,14 +146,14 @@ namespace Blog.Repositories.Implementations
                         _ = await _context.SaveChangesAsync();
 
                         transaction.Complete();
-                        result.Message = $"Autor de ID {id} removido com sucesso";
+                        result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorRemoved), author.Name);
                         result.Output = true;
                     }
                 }
                 else
                 {
                     result.Output = false;
-                    result.Message = $"Autor de ID {id} não encontrado";
+                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorNotFound), id);
                 }
             }
             catch (Exception ex)
@@ -152,8 +162,8 @@ namespace Blog.Repositories.Implementations
                 {
                     new ErrorBase()
                     {
-                        Code = "1000",
-                        Message = $"Erro removendo o autor de ID {id}",
+                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryRemoveAuthorError),
+                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryRemoveAuthorError), id),
                         InternalMessage = ex.ToString()
                     }
                 };
