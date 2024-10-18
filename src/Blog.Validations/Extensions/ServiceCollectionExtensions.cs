@@ -1,7 +1,6 @@
 ﻿using Blog.Validations.Abstractions;
 using Blog.Validations.Implementations;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Blog.Validations.Extensions
 {

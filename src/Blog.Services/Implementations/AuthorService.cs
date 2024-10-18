@@ -3,12 +3,10 @@ using Blog.Bases.Services;
 using Blog.Entities.Authors;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Entities;
-using Blog.Repositories.Implementations;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
 using Blog.Validations;
 using Blog.Validations.Abstractions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace Blog.Services.Implementations
 {

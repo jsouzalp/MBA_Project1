@@ -30,13 +30,12 @@ namespace Blog.Repositories.Implementations
             RepositoryOutput<Author> result = new();
             try
             {
-                Author author = await _context.Authors
+                result.Output = await _context.Authors
                     .Include(x => x.Posts).ThenInclude(x => x.Comments).ThenInclude(x => x.CommentAuthor)
                     .FirstOrDefaultAsync(x => x.Id == id);
-                if (author != null)
+                if (result.Output != null)
                 {
-                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorFound), author.Name);
-                    result.Output = author;
+                    result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorFound), result.Output.Name);
                 }
                 else
                 {
@@ -91,7 +90,9 @@ namespace Blog.Repositories.Implementations
             RepositoryOutput<Author> result = new();
             try
             {
-                Author author = await _context.Authors.FirstOrDefaultAsync(x => x.Id == input.Input.Id);
+                Author author = await _context.Authors
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == input.Input.Id);
 
                 if (author != null)
                 {

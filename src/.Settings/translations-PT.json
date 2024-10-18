@@ -24,5 +24,59 @@
         "RemoveAuthorError": "Erro ao remover o Autor {0}"
       }
     }
+  },
+  "Post": {
+    "Validations": {
+      "IdEmpty": "ID não pode ser vazio",
+      "AuthorIdEmpty": "Autor não pode ser vazio",
+      "EmptyTitle": "Título não pode ser vazio",
+      "NullTitle": "Título não pode ser nulo",
+      "EmptyMessage": "Mensagem não pode ser vazio",
+      "NullMessage": "Mensagem não pode ser nulo",
+      "FilterPage": "Número da página é inválido",
+      "FilterRecordsPerPage": "Registros por página é inválido"
+    },
+    "Repository": {
+      "Info": {
+        "PostCreated": "Postagem {0} criada com sucesso",
+        "PostUpdated": "Postagem {0} atualizada com sucesso",
+        "PostRemoved": "Postagem {0} removida com sucesso",
+        "FilterSuccess": "Postagens do Autor {0} da página {1} obtido com sucesso"
+      },
+      "Warning": {
+        "PostNotFound": "Post {0} não localizado",
+        "FilterPostNotFound": "Postagens do Autor {0} da página {1} não localizado"
+      },
+      "Error": {
+        "FilterPostError": "Erro ao obter postagens do Autor {0}",
+        "CreatePostError": "Erro ao criar a postagem {0}",
+        "UpdatePostError": "Erro ao atualizar a postagem {0}",
+        "RemovePostError": "Erro ao remover a postagem {0}"
+      }
+    }
+  },
+  "Comment": {
+    "Validations": {
+      "IdEmpty": "ID não pode ser vazio",
+      "PostIdEmpty": "ID da postagem não pode ser vazio",
+      "CommentAuthorIdEmpty": "ID do autor da postagem não pode ser vazio",
+      "EmptyMessage": "Mensagem não pode ser vazia",
+      "NullMessage": "Mensagem não pode ser nulo"
+    },
+    "Repository": {
+      "Info": {
+        "CommentCreated": "Comentário {0} criado com sucesso",
+        "CommentUpdated": "Comentário {0} atualizado com sucesso",
+        "CommentRemoved": "Comentário {0} removido com sucesso"
+      },
+      "Warning": {
+        "CommentNotFound": "Comentário {0} não localizado"
+      },
+      "Error": {
+        "CreateCommentError": "Erro ao criar comentário {0}",
+        "UpdateCommentError": "Erro ao atualizar comentário {0}",
+        "RemoveCommentError": "Erro ao remover comentário {0}"
+      }
+    }
   }
 }

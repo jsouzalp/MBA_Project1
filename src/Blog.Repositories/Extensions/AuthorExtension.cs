@@ -2,7 +2,7 @@
 
 namespace Blog.Repositories.Extensions
 {
-    public static class AuthorsExtension
+    public static class AuthorExtension
     {
         public static Author FillKeys(this Author author)
         {

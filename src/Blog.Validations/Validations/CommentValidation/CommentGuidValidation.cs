@@ -4,17 +4,17 @@ using FluentValidation;
 
 namespace Blog.Validations.Validations.AuthorValidation
 {
-    public class AuthorGuidValidation : AbstractValidator<Guid>
+    public class CommentGuidValidation : AbstractValidator<Guid>
     {
-        public AuthorGuidValidation(ITranslationResource translateResource)
+        public CommentGuidValidation(ITranslationResource translateResource)
         {
             RuleFor(x => x)
                 .Must(delegate (Guid id)
                 {
                     return id != Guid.Empty;
                 })
-                .WithErrorCode(translateResource.GetCodeResource(AuthorConstant.ValidationsIdEmpty))
-                .WithMessage(translateResource.GetResource(AuthorConstant.ValidationsIdEmpty));
+                .WithErrorCode(translateResource.GetCodeResource(CommentConstant.ValidationsIdEmpty))
+                .WithMessage(translateResource.GetResource(CommentConstant.ValidationsIdEmpty));
         }
     }
 }

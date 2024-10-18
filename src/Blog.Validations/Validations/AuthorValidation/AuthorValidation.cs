@@ -18,7 +18,6 @@ namespace Blog.Validations.Validations.AuthorValidation
                 .WithErrorCode(translateResource.GetCodeResource(AuthorConstant.ValidationsAuthorNullName))
                 .WithMessage(translateResource.GetResource(AuthorConstant.ValidationsAuthorNullName));
 
-
             RuleFor(x => x.Posts)
                 .Must(delegate (ICollection<PostInput> posts)
                 {

@@ -1,6 +1,4 @@
-﻿using Blog.Entities.Comments;
-
-namespace Blog.Entities.Posts
+﻿namespace Blog.Entities.Posts
 {
     public class PostInput
     {

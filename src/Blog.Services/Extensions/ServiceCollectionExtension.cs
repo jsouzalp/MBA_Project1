@@ -3,7 +3,6 @@ using Blog.Repositories.Extensions;
 using Blog.Services.Abstractions;
 using Blog.Services.Implementations;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Blog.Validations.Extensions;
 using FluentValidation;
 using Blog.Validations.Validations.AuthorValidation;
@@ -18,6 +17,9 @@ namespace Blog.Services.Extensions
             services.AddValidatorsFromAssemblyContaining<AuthorValidation>();
             services.AddRepositories(databaseSettings);
             services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
+            
             return services;
         }
     }

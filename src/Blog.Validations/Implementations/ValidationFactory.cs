@@ -1,7 +1,6 @@
 ﻿using Blog.Bases;
 using Blog.Validations.Abstractions;
 using FluentValidation;
-using System.Linq;
 
 namespace Blog.Validations.Implementations
 {

@@ -1,6 +1,4 @@
-﻿using Blog.Entities.Authors;
-
-namespace Blog.Entities.Comments
+﻿namespace Blog.Entities.Comments
 {
     public class CommentOutput
     {

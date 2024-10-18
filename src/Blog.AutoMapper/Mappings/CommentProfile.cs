@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Blog.Entities.Comments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.AutoMapper.Mappings
 {
@@ -17,8 +12,15 @@ namespace Blog.AutoMapper.Mappings
                 .ForMember(dest => dest.PostId, source => source.MapFrom(src => src.PostId))
                 .ForMember(dest => dest.CommentAuthorId, source => source.MapFrom(src => src.CommentAuthorId))
                 .ForMember(dest => dest.Date, source => source.MapFrom(src => src.Date))
-                .ForMember(dest => dest.AuthorName, source => source.MapFrom(src => src.CommentAuthor.Name))
+                .ForMember(dest => dest.AuthorName, source => source.MapFrom(src => src.CommentAuthor != null ? src.CommentAuthor.Name : string.Empty))
                 .ForMember(dest => dest.Message, source => source.MapFrom(src => src.Message));
+
+            CreateMap<CommentInput, Comment>()
+                .ForMember(dest => dest.Id, source => source.MapFrom(x => x.Id))
+                .ForMember(dest => dest.PostId, source => source.MapFrom(x => x.PostId))
+                .ForMember(dest => dest.CommentAuthorId, source => source.MapFrom(x => x.CommentAuthorId))
+                .ForMember(dest => dest.Message, source => source.MapFrom(x => x.Message));
+
         }
     }
 }

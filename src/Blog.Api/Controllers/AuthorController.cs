@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Blog.Bases.Services;
+﻿using Blog.Bases.Services;
 using Blog.Entities.Authors;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
