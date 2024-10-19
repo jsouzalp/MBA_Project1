@@ -1,5 +1,6 @@
 ﻿using Blog.Bases;
 using Blog.Entities.Authors;
+using Blog.Entities.Comments;
 using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
@@ -31,8 +32,8 @@ namespace Blog.Repositories.Implementations
             try
             {
                 result.Output = await _context.Authors
-                    //.Include(x => x.Posts).ThenInclude(x => x.Comments).ThenInclude(x => x.CommentAuthor)
                     .FirstOrDefaultAsync(x => x.Id == id);
+
                 if (result.Output != null)
                 {
                     result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorFound), result.Output.Name);
@@ -130,7 +131,7 @@ namespace Blog.Repositories.Implementations
             try
             {
                 Author author = await _context.Authors
-                    .Include(x => x.Posts)
+                    .Include(x => x.Posts).ThenInclude(x => x.Comments)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (author != null)
@@ -139,10 +140,12 @@ namespace Blog.Repositories.Implementations
                     {
                         foreach (Post post in author.Posts)
                         {
-                            _ = await _context.Comments.Where(x => x.PostId == post.Id).ExecuteDeleteAsync();
+                            foreach (Comment comment in post.Comments)
+                            {
+                                _context.Comments.Remove(comment);
+                            }
                             _ = _context.Posts.Remove(post);
                         }
-
                         _ = _context.Authors.Remove(author);
                         _ = await _context.SaveChangesAsync();
 

@@ -26,6 +26,10 @@
             <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
+
+    <div id="error-messages">
+        @await Html.PartialAsync("_ErrorMessages", ViewBag.ErrorMessages as IEnumerable<string> ?? new List<string>())
+    </div>
 </div>
 
 @section Scripts {

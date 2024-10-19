@@ -63,7 +63,7 @@ namespace Blog.Mvc.Controllers
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
                 postViewModel.AuthorId = Guid.Parse(userId); 
 
-                var r = _postService.CreatePostAsync(new ServiceInput<PostInput>()
+                var result = _postService.CreatePostAsync(new ServiceInput<PostInput>()
                 {
                     Input = new PostInput()
                     {
@@ -72,6 +72,13 @@ namespace Blog.Mvc.Controllers
                         Message = postViewModel.Message
                     }
                 }).Result;
+
+                if (!result.Success && result.Errors.Any())
+                {
+                    // Armazena os erros na ViewBag
+                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
+                    return View(postViewModel);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -83,7 +90,7 @@ namespace Blog.Mvc.Controllers
         {
             var post = _postService.GetPostAsync(id).Result;
 
-            if (post == null)
+            if (post == null || !post.Success)
             {
                 return NotFound();
             }
@@ -119,7 +126,7 @@ namespace Blog.Mvc.Controllers
 
             PostViewModel result = new PostViewModel();
 
-            if (post != null)
+            if (post != null && post.Success)
             {
                 result = new PostViewModel()
                 {
@@ -150,6 +157,12 @@ namespace Blog.Mvc.Controllers
                         Message = postViewModel.Message
                     }
                 }).Result;
+
+                if (!result.Success && result.Errors.Any())
+                {
+                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
+                    return View(postViewModel);
+                }
 
                 return RedirectToAction(nameof(Index));
             }

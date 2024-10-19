@@ -7,6 +7,11 @@
 <div class="container mt-4">
     <h2 class="text-center">Postagem e Comentários</h2>
 
+    <!-- Área para exibir erros -->
+    <div id="error-messages">
+        @await Html.PartialAsync("_ErrorMessages", ViewBag.ErrorMessages as IEnumerable<string> ?? new List<string>())
+    </div>
+
     @if (User.Identity.IsAuthenticated)
     {
         <!-- Formulário para adicionar um novo comentário -->
@@ -33,7 +38,7 @@
 
         <h6 class="mt-4">Comentários</h6>
 
-        @if (Model.Comments.Any())
+        @if (Model.Comments != null && Model.Comments.Any())
         {
             @foreach (var comment in Model.Comments)
             {

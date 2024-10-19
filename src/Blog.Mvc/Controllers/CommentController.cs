@@ -34,7 +34,7 @@ namespace Blog.Mvc.Controllers
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 commentViewModel.CommentAuthorId = Guid.Parse(userId);
 
-                var r = _commentService.CreateCommentAsync(new ServiceInput<CommentInput>()
+                var result = _commentService.CreateCommentAsync(new ServiceInput<CommentInput>()
                 {
                     Input = new CommentInput()
                     {
@@ -44,7 +44,12 @@ namespace Blog.Mvc.Controllers
                     }
                 }).Result;
 
-                return RedirectToAction("Details", "Post", new { id = commentViewModel.PostId });
+                if (!result.Success && result.Errors.Any())
+                {
+                    // Armazena os erros na ViewBag
+                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
+                    //return RedirectToAction("Details", "Post", commentViewModel);
+                }
             }
 
             return RedirectToAction("Details", "Post", new { id = commentViewModel.PostId });

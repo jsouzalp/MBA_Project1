@@ -1,4 +1,5 @@
 ﻿using Blog.Bases;
+using Blog.Entities.Comments;
 using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
@@ -185,7 +186,10 @@ namespace Blog.Repositories.Implementations
                 {
                     using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        _ = await _context.Comments.Where(x => x.Id == post.Id).ExecuteDeleteAsync();
+                        foreach (Comment comment in post.Comments)
+                        {
+                            _context.Comments.Remove(comment);
+                        }
                         _ = _context.Posts.Remove(post);
                         _ = await _context.SaveChangesAsync();
 
