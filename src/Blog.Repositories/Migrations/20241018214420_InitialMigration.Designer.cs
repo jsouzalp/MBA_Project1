@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Repositories.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20240929113532_0001_InitialMigration")]
-    partial class _0001_InitialMigration
+    [Migration("20241018214420_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace Blog.Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("UniqueIdentifier")
                         .HasColumnName("AUTHOR_ID");
+
+                    b.Property<Guid>("IdentityUser")
+                        .HasColumnType("UniqueIdentifier")
+                        .HasColumnName("IDENTITY_USER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -123,12 +127,21 @@ namespace Blog.Repositories.Migrations
 
             modelBuilder.Entity("Blog.Entities.Comments.Comment", b =>
                 {
+                    b.HasOne("Blog.Entities.Authors.Author", "CommentAuthor")
+                        .WithMany("Comments")
+                        .HasForeignKey("CommentAuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_TB_COMMENT_002");
+
                     b.HasOne("Blog.Entities.Posts.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
-                        .HasConstraintName("FK_TB_POST_001");
+                        .HasConstraintName("FK_TB_COMMENT_001");
+
+                    b.Navigation("CommentAuthor");
 
                     b.Navigation("Post");
                 });
@@ -140,13 +153,15 @@ namespace Blog.Repositories.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
-                        .HasConstraintName("FK_TB_AUTHOR_001");
+                        .HasConstraintName("FK_TB_POST_002");
 
                     b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Blog.Entities.Authors.Author", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Posts");
                 });
 

@@ -30,7 +30,8 @@ namespace Blog.Repositories.Implementations
             try
             {
                 result.Output = await _context.Posts
-                    .Where(x => x.AuthorId == input.Input.AuthorId)
+                    .Where(x => input.Input.AuthorId != null ? x.AuthorId == input.Input.AuthorId : 1 == 1)
+                    .Include(x => x.Author)
                     .Include(x => x.Comments).ThenInclude(x => x.CommentAuthor)
                     .Skip(input.Input.Skip)
                     .Take(input.Input.RecordsPerPage)
@@ -59,6 +60,44 @@ namespace Blog.Repositories.Implementations
                     {
                         Code = _translateResource.GetCodeResource(PostConstant.RepositoryFilterPostError),
                         Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryFilterPostError), input?.Input?.AuthorId),
+                        InternalMessage = ex.ToString()
+                    }
+                };
+            }
+
+            return result;
+        }
+
+        public async Task<RepositoryOutput<Post>> GetPostAsync(Guid id)
+        {
+            RepositoryOutput<Post> result = new();
+            try
+            {
+                result.Output = await _context.Posts
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments).ThenInclude(x => x.CommentAuthor)
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (result.Output != null)
+                {
+                    result.Output.Comments = result.Output.Comments
+                        .OrderByDescending(x => x.Date)
+                        .ToList();
+                    result.Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryPostSelect), id);
+                }
+                else
+                {
+                    result.Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryPostNotFound), id);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Errors = new List<ErrorBase>()
+                {
+                    new ErrorBase()
+                    {
+                        Code = _translateResource.GetCodeResource(PostConstant.RepositorySelectError),
+                        Message = string.Format(_translateResource.GetResource(PostConstant.RepositorySelectError), id),
                         InternalMessage = ex.ToString()
                     }
                 };

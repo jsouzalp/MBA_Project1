@@ -55,6 +55,26 @@ namespace Blog.Services.Implementations
             return result;
         }
 
+        public async Task<ServiceOutput<PostOutput>> GetPostAsync(Guid id)
+        {
+            ServiceOutput<PostOutput> result = new();
+            ValidationOutput validation = await _idValidation.ValidateIdAsync(id);
+
+            if (validation.Success)
+            {
+                RepositoryOutput<Post> repositoryResult = await _repository.GetPostAsync(id);
+                result.Message = repositoryResult.Message;
+                result.Output = _mapper.Map<PostOutput>(repositoryResult.Output);
+                result.Errors = repositoryResult.Errors;
+            }
+            else
+            {
+                result.Errors = validation.Errors;
+            }
+
+            return result;
+        }
+
         public async Task<ServiceOutput<PostOutput>> CreatePostAsync(ServiceInput<PostInput> input)
         {
             ServiceOutput<PostOutput> result = new();

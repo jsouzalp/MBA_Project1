@@ -29,6 +29,26 @@ namespace Blog.Services.Implementations
             _mapper = mapper;
         }
 
+        public async Task<ServiceOutput<CommentOutput>> GetCommentAsync(Guid id)
+        {
+            ServiceOutput<CommentOutput> result = new();
+            ValidationOutput validation = await _idValidation.ValidateIdAsync(id);
+
+            if (validation.Success)
+            {
+                RepositoryOutput<Comment> repositoryResult = await _repository.GetCommentAsync(id);
+                result.Message = repositoryResult.Message;
+                result.Output = _mapper.Map<CommentOutput>(repositoryResult.Output);
+                result.Errors = repositoryResult.Errors;
+            }
+            else
+            {
+                result.Errors = validation.Errors;
+            }
+
+            return result;
+        }
+
         public async Task<ServiceOutput<CommentOutput>> CreateCommentAsync(ServiceInput<CommentInput> input)
         {
             ServiceOutput<CommentOutput> result = new();

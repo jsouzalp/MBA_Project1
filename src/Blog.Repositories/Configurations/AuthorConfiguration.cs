@@ -16,6 +16,10 @@ namespace Blog.Repositories.Configurations
                 .HasColumnName("AUTHOR_ID")
                 .HasColumnType(DatabaseTypeConstant.UniqueIdentifier)
                 .IsRequired();
+            builder.Property(x => x.IdentityUser)
+                .HasColumnName("IDENTITY_USER")
+                .HasColumnType(DatabaseTypeConstant.UniqueIdentifier)
+                .IsRequired();
             builder.Property(x => x.Name)
                 .HasColumnName("NAME")
                 .HasColumnType(DatabaseTypeConstant.Varchar)
