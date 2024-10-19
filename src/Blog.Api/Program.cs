@@ -1,8 +1,11 @@
+using Blog.Api.Data;
 using Blog.Api.Helpers;
 using Blog.AutoMapper.Extensions;
 using Blog.Bases.Settings;
 using Blog.Services.Extensions;
 using Blog.Translations.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 internal class Program
 {
@@ -52,6 +55,11 @@ internal class Program
         });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(databaseSettings.ConnectionStringIdentity));
+        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
         var app = builder.Build();
 

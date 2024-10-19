@@ -19,24 +19,36 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ServiceOutput<AuthorOutput>> GetAuthorByIdAsync(Guid id)
         {
             return await _authorService.GetAuthorByIdAsync(id);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ServiceOutput<AuthorOutput>> CreateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
             return await _authorService.CreateAuthorAsync(input);
         }
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ServiceOutput<AuthorOutput>> UpdateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
             return await _authorService.UpdateAuthorAsync(input);
         }
 
         [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ServiceOutput<bool>> RemoveAuthorAsync(Guid id)
         {
             return await _authorService.RemoveAuthorAsync(id);
