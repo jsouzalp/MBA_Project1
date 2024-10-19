@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".settings", ".settings", "{
 	ProjectSection(SolutionItems) = preProject
 		.Settings\appsettings.json = .Settings\appsettings.json
 		.Settings\DatabaseSettings.json = .Settings\DatabaseSettings.json
+		.Settings\jwtSettings.json = .Settings\jwtSettings.json
 		.Settings\translations-EN.json = .Settings\translations-EN.json
 		.Settings\translations-PT.json = .Settings\translations-PT.json
 	EndProjectSection
@@ -36,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Tests", ".Tests", "{04E34E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Tests.CommentApi", "Blog.Tests.CommentApi\Blog.Tests.CommentApi.csproj", "{95E08743-F3B9-4D21-B7D5-3FA670255056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Mvc", "Blog.Mvc\Blog.Mvc.csproj", "{1353DAC6-A869-4491-84C7-FF1BD9B574B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Mvc", "Blog.Mvc\Blog.Mvc.csproj", "{1353DAC6-A869-4491-84C7-FF1BD9B574B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

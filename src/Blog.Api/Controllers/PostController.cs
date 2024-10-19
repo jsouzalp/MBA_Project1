@@ -20,47 +20,52 @@ namespace Blog.Api.Controllers
 
         [HttpGet("filter")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<IEnumerable<PostOutput>>> FilterPostsAsync([FromQuery] FilterPostInput input)
+        public async Task<ActionResult<ServiceOutput<IEnumerable<PostOutput>>>> FilterPostsAsync([FromQuery] FilterPostInput input)
         {
-            return await _postService.FilterPostsAsync(input);
+            var result = await _postService.FilterPostsAsync(input);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<PostOutput>> GetPostAsync(Guid id)
+        public async Task<ActionResult<ServiceOutput<PostOutput>>> GetPostAsync(Guid id)
         {
-            return await _postService.GetPostAsync(id);
+            var result = await _postService.GetPostAsync(id);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<PostOutput>> CreatePostAsync([FromBody] ServiceInput<PostInput> input)
+        public async Task<ActionResult<ServiceOutput<PostOutput>>> CreatePostAsync([FromBody] ServiceInput<PostInput> input)
         {
-            return await _postService.CreatePostAsync(input);
+            var result = await _postService.CreatePostAsync(input);
+            return GenerateResponse(result, StatusCodes.Status201Created);
         }
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<PostOutput>> UpdatePostAsync([FromBody] ServiceInput<PostInput> input)
+        public async Task<ActionResult<ServiceOutput<PostOutput>>> UpdatePostAsync([FromBody] ServiceInput<PostInput> input)
         {
-            return await _postService.UpdatePostAsync(input);
+            var result = await _postService.UpdatePostAsync(input);
+            return GenerateResponse(result, StatusCodes.Status204NoContent);
         }
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<bool>> RemovePostAsync(Guid id)
+        public async Task<ActionResult<ServiceOutput<bool>>> RemovePostAsync(Guid id)
         {
-            return await _postService.RemovePostAsync(id);
+            var result = await _postService.RemovePostAsync(id);
+            return GenerateResponse(result, StatusCodes.Status204NoContent);
         }
     }
 }

@@ -3,7 +3,6 @@
     public static class AuthorConstant
     {
         #region Validation
-        public const string ValidationsIdEmpty = "Autor.Validations.IdEmpty";
         public const string ValidationsAuthorEmptyName = "Autor.Validations.EmptyName";
         public const string ValidationsAuthorNullName = "Autor.Validations.NullName";
         public const string ValidationsAuthorPostWithoutTitle = "Autor.Validations.PostWithoutTitle";

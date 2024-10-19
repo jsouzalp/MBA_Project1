@@ -4,7 +4,6 @@ using Blog.Mvc.Models;
 using Blog.Services.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 public class AccountController : Controller
 {

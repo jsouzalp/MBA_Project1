@@ -1,6 +1,5 @@
 ﻿using Blog.Bases;
 using Blog.Entities.Comments;
-using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
 using Blog.Repositories.Entities;

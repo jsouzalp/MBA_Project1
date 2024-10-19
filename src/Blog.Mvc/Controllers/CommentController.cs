@@ -1,9 +1,7 @@
 ﻿using Blog.Bases.Services;
 using Blog.Entities.Comments;
-using Blog.Entities.Posts;
 using Blog.Mvc.Models;
 using Blog.Services.Abstractions;
-using Blog.Services.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

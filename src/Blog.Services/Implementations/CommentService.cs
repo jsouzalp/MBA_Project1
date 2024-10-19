@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Bases.Services;
 using Blog.Entities.Comments;
-using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Entities;
 using Blog.Services.Abstractions;

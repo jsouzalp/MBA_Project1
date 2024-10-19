@@ -1,7 +1,15 @@
-﻿using Blog.Repositories.Contexts;
+﻿using Blog.Entities.Authors;
+using Blog.Entities.Comments;
+using Blog.Entities.Posts;
+using Blog.Repositories.Contexts;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Blog.Api.Helpers
+namespace Blog.Services.Helpers
 {
     public static class DbMigrationHelper
     {
@@ -17,44 +25,68 @@ namespace Blog.Api.Helpers
             var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
             var context = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+            var contextIdentity = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             if (env.IsDevelopment())
             {
                 await context.Database.MigrateAsync();
-                await SeedDatabaseAsync(context);
+                await contextIdentity.Database.MigrateAsync();
+                await SeedDatabaseAsync(context, userManager);
             }
         }
 
-        private static async Task SeedDatabaseAsync(BlogDbContext context)
+        private static async Task SeedDatabaseAsync(BlogDbContext context, UserManager<IdentityUser> userManager)
         {
             if (!context.Authors.Any())
             {
+                #region Criação de usuários no Identity
                 Guid authorId1 = Guid.NewGuid();
-                await context.Authors.AddAsync(new Entities.Authors.Author()
+                Guid authorId2 = Guid.NewGuid();
+
+                var user1 = new IdentityUser { UserName = "cath.lp@gmail.com", Email = "cath.lp@gmail.com", EmailConfirmed = true };
+                var result1 = await userManager.CreateAsync(user1, "123");
+
+                if (result1.Succeeded)
+                {
+                    authorId1 = Guid.Parse(user1.Id);
+                }
+
+                var user2 = new IdentityUser { UserName = "jsouza.lp@gmail.com", Email = "jsouza.lp@gmail.com", EmailConfirmed = true };
+                var result2 = await userManager.CreateAsync(user2, "123");
+
+                if (result2.Succeeded)
+                {
+                    authorId2 = Guid.Parse(user2.Id);
+                }
+                #endregion
+
+                #region Criação de massa de dados
+                await context.Authors.AddAsync(new Author()
                 {
                     Id = authorId1,
+                    IdentityUser = authorId1,
                     Name = "Cath Oliveira"
                 });
 
-                Guid authorId2 = Guid.NewGuid();
                 Guid postId1 = Guid.NewGuid();
                 Guid postId2 = Guid.NewGuid();
-                await context.Authors.AddAsync(new Entities.Authors.Author()
+                await context.Authors.AddAsync(new Author()
                 {
                     Id = authorId2,
-                    Name = "Jairo Azevedo", 
-                    Posts = new List<Entities.Posts.Post>()
+                    Name = "Jairo Azevedo",
+                    Posts = new List<Post>()
                     {
-                        new Entities.Posts.Post() 
+                        new Post()
                         {
                             Id = postId1,
                             AuthorId = authorId2,
                             Date = DateTime.Now,
-                            Title = "Primeiro post", 
-                            Message = "Este é um exemplo de postagem - Postagem 001", 
-                            Comments = new List<Entities.Comments.Comment>()
+                            Title = "Primeiro post",
+                            Message = "Este é um exemplo de postagem - Postagem 001",
+                            Comments = new List<Comment>()
                             {
-                                new Entities.Comments.Comment()
+                                new Comment()
                                 {
                                     Id = Guid.NewGuid(),
                                     PostId = postId1,
@@ -62,7 +94,7 @@ namespace Blog.Api.Helpers
                                     CommentAuthorId = authorId1,
                                     Message = "Primeiro comentário na minha postagem 001"
                                 },
-                                new Entities.Comments.Comment()
+                                new Comment()
                                 {
                                     Id = Guid.NewGuid(),
                                     PostId = postId1,
@@ -72,16 +104,16 @@ namespace Blog.Api.Helpers
                                 }
                             }
                         },
-                        new Entities.Posts.Post()
+                        new Post()
                         {
                             Id = postId2,
                             AuthorId = authorId2,
                             Date = DateTime.Now,
                             Title = "Segundo post",
                             Message = "Este é um exemplo de postagem - Postagem 002",
-                            Comments = new List<Entities.Comments.Comment>()
+                            Comments = new List<Comment>()
                             {
-                                new Entities.Comments.Comment()
+                                new Comment()
                                 {
                                     Id = Guid.NewGuid(),
                                     PostId = postId1,
@@ -89,7 +121,7 @@ namespace Blog.Api.Helpers
                                     CommentAuthorId = authorId1,
                                     Message = "Primeiro comentário na minha postagem 002"
                                 },
-                                new Entities.Comments.Comment()
+                                new Comment()
                                 {
                                     Id = Guid.NewGuid(),
                                     PostId = postId1,
@@ -97,7 +129,7 @@ namespace Blog.Api.Helpers
                                     CommentAuthorId = authorId1,
                                     Message = "Segundo comentário na minha postagem 002"
                                 },
-                                new Entities.Comments.Comment()
+                                new Comment()
                                 {
                                     Id = Guid.NewGuid(),
                                     PostId = postId1,
@@ -111,6 +143,7 @@ namespace Blog.Api.Helpers
                 });
 
                 await context.SaveChangesAsync();
+                #endregion
             }
         }
     }

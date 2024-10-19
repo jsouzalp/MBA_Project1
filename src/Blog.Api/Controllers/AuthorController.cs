@@ -20,38 +20,42 @@ namespace Blog.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<AuthorOutput>> GetAuthorByIdAsync(Guid id)
+        public async Task<ActionResult<ServiceOutput<AuthorOutput>>> GetAuthorByIdAsync(Guid id)
         {
-            return await _authorService.GetAuthorByIdAsync(id);
+            var result = await _authorService.GetAuthorByIdAsync(id);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<AuthorOutput>> CreateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
+        public async Task<ActionResult<ServiceOutput<AuthorOutput>>> CreateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
-            return await _authorService.CreateAuthorAsync(input);
+            var result = await _authorService.CreateAuthorAsync(input);
+            return GenerateResponse(result, StatusCodes.Status201Created);
         }
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<AuthorOutput>> UpdateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
+        public async Task<ActionResult<ServiceOutput<AuthorOutput>>> UpdateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
-            return await _authorService.UpdateAuthorAsync(input);
+            var result = await _authorService.UpdateAuthorAsync(input);
+            return GenerateResponse(result, StatusCodes.Status204NoContent);
         }
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<bool>> RemoveAuthorAsync(Guid id)
+        public async Task<ActionResult<ServiceOutput<bool>>> RemoveAuthorAsync(Guid id)
         {
-            return await _authorService.RemoveAuthorAsync(id);
+            var result = await _authorService.RemoveAuthorAsync(id);
+            return GenerateResponse(result, StatusCodes.Status204NoContent);
         }
     }
 }

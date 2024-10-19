@@ -7,7 +7,6 @@ using Blog.Services.Abstractions;
 using Blog.Services.Entities;
 using Blog.Validations;
 using Blog.Validations.Abstractions;
-using System.Collections.Generic;
 
 namespace Blog.Services.Implementations
 {

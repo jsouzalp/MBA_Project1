@@ -1,6 +1,5 @@
 ﻿using Blog.Bases.Services;
 using Blog.Entities.Comments;
-using Blog.Entities.Posts;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -20,38 +19,42 @@ namespace Blog.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<CommentOutput>> GetCommentAsync(Guid id)
+        public async Task<ActionResult<ServiceOutput<CommentOutput>>> GetCommentAsync(Guid id)
         {
-            return await _commentService.GetCommentAsync(id);
+            var result = await _commentService.GetCommentAsync(id);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<CommentOutput>> CreateCommentAsync([FromBody] ServiceInput<CommentInput> input)
+        public async Task<ActionResult<ServiceOutput<CommentOutput>>> CreateCommentAsync([FromBody] ServiceInput<CommentInput> input)
         {
-            return await _commentService.CreateCommentAsync(input);
+            var result = await _commentService.CreateCommentAsync(input);
+            return GenerateResponse(result, StatusCodes.Status201Created);
         }
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<CommentOutput>> UpdateCommentAsync([FromBody] ServiceInput<CommentInput> input)
+        public async Task<ActionResult<ServiceOutput<CommentOutput>>> UpdateCommentAsync([FromBody] ServiceInput<CommentInput> input)
         {
-            return await _commentService.UpdateCommentAsync(input);
+            var result = await _commentService.UpdateCommentAsync(input);
+            return GenerateResponse(result, StatusCodes.Status204NoContent);
         }
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ServiceOutput<bool>> RemoveCommentAsync(Guid id)
+        public async Task<ActionResult<ServiceOutput<bool>>> RemoveCommentAsync(Guid id)
         {
-            return await _commentService.RemoveCommentAsync(id);
+            var result = await _commentService.RemoveCommentAsync(id);
+            return GenerateResponse(result, StatusCodes.Status204NoContent);
         }
     }
 }

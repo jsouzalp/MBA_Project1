@@ -11,15 +11,14 @@ Inicialmente esta solução está desenvolvida em .Net 6
 ## **2. Proposta do Projeto**
 O projeto consiste em:
 
-- **ddd:** Camada web de apresentação das informações.
+- **Blog.Mvc:** Camada web de apresentação das informações.
 - **Blog.Api:** WebAPI que oferece uma coleção de métodos para integração com outros tipos de dispositivos, desde que autenticado
 - **Blog.Services:** Camada de serviços responsável por realizar consultas, validações e persistência dos dados coletados
 - **Blog.Repositories:** Camada de repositório das informações que faz uso do ORM Entity Framework Core
 - **Blog.AutoMapper:** Camada de mapeamento das entidades utilizadas no projeto
 - **Blog.Translations:** Camada intermediária responsável por obter as traduções/recursos de mensagens apresentadas pelo sistema
 - **Blog.Validations:** Camada responsável por realizar as validações na camada de serviços.
-
-- **Autenticação e Autorização:** Implementação de controle de acesso, diferenciando administradores e usuários comuns.
+- **Autenticação e Autorização:** Implementação de controle de acesso.
 
 ## **3. Tecnologias Utilizadas**
 - **Linguagem de Programação:** 
@@ -63,7 +62,6 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## **5. Funcionalidades Implementadas**
 - **CRUD para Posts e Comentários:** Permite criar, editar, visualizar e excluir posts e comentários.
-- **Autenticação e Autorização:** Diferenciação entre usuários comuns e administradores.
 - **API RESTful:** Exposição de endpoints para operações via API.
 - **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
 
@@ -113,8 +111,11 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
    - `dotnet run`
    - Acesse a documentação da API em: http://localhost:5001/swagger
 
+5. **Primeira Execução**
+   Quando se tratar de uma primeira execução em ambiente de desenvolvimento, serão executados os Migrations e em seguida serão criados os usuários "jsouza.lp@gmail.com" e "cath.lp@gmail.com" com a password inicial "123" de forma automática já com algumas postagens e comentários para uma melhor experiência com a utilização da solução.
+   
 ## **7. Instruções de Configuração**
-- **JWT para API:** As chaves de configuração do JWT estão no `appsettings.json`.
+- **JWT para API:** As chaves de configuração do JWT estão no `jwtSettings.json`.
 
 ## **8. Documentação da API**
 A documentação da API está disponível através do Swagger. Após iniciar a API, acesse a documentação em: http://localhost:5001/swagger

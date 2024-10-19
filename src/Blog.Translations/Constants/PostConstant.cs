@@ -3,7 +3,6 @@
     public static class PostConstant
     {
         #region Validation
-        public const string ValidationsIdEmpty = "Post.Validations.IdEmpty";
         public const string ValidationsAuthorIdEmpty = "Post.Validations.AuthorIdEmpty";
         public const string ValidationsPostEmptyTitle = "Post.Validations.EmptyTitle";
         public const string ValidationsPostNullTitle = "Post.Validations.NullTitle";

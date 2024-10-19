@@ -1,10 +1,8 @@
 using Blog.Bases.Settings;
-using Blog.Mvc.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Blog.AutoMapper.Extensions;
 using Blog.Services.Extensions;
 using Blog.Translations.Extensions;
+using Blog.Services.Helpers;
 
 internal class Program
 {
@@ -31,21 +29,9 @@ internal class Program
         builder.Services.AddTranslation();
         builder.Services.AddServices(databaseSettings);
         #endregion
-
-        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(databaseSettings.ConnectionStringIdentity));
-        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-        builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-        {
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredLength = 1;
-            options.Password.RequiredUniqueChars = 0;
-        }).AddEntityFrameworkStores<ApplicationDbContext>();
+        
         builder.Services.AddControllersWithViews();
-
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -61,16 +47,18 @@ internal class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
-
         app.UseAuthentication();
         app.UseAuthorization();
-
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Post}/{action=Index}/{id?}");
         app.MapRazorPages();
+
+        if (app.Environment.IsDevelopment())
+        {
+            DbMigrationHelper.SeedDataAsync(app).Wait();
+        }
 
         app.Run();
     }

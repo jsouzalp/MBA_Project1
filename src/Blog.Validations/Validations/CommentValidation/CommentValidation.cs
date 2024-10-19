@@ -1,5 +1,4 @@
 ﻿using Blog.Entities.Comments;
-using Blog.Entities.Posts;
 using Blog.Translations.Abstractions;
 using Blog.Translations.Constants;
 using FluentValidation;

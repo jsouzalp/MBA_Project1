@@ -3,12 +3,7 @@ using Blog.Entities.Comments;
 using Blog.Services.Entities;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Tests.CommentApi
 {

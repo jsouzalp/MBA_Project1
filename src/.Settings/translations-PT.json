@@ -1,7 +1,11 @@
 ﻿{
+  "Guid": {
+    "Validations": {
+      "IdEmpty": "ID não pode ser vazio"
+    }
+  },
   "Autor": {
     "Validations": {
-      "IdEmpty": "ID não pode ser vazio",
       "EmptyName": "Nome não pode ser vazio",
       "NullName": "Nome não pode ser nulo",
       "PostWithoutTitle": "Postagem(ns) possui título(s) não preenchido(s)",
@@ -27,7 +31,6 @@
   },
   "Post": {
     "Validations": {
-      "IdEmpty": "ID não pode ser vazio",
       "AuthorIdEmpty": "Autor não pode ser vazio",
       "EmptyTitle": "Título não pode ser vazio",
       "NullTitle": "Título não pode ser nulo",
@@ -59,7 +62,6 @@
   },
   "Comment": {
     "Validations": {
-      "IdEmpty": "ID não pode ser vazio",
       "PostIdEmpty": "ID da postagem não pode ser vazio",
       "CommentAuthorIdEmpty": "ID do autor da postagem não pode ser vazio",
       "EmptyMessage": "Mensagem não pode ser vazia",

@@ -3,7 +3,6 @@
     public static class CommentConstant
     {
         #region Validation
-        public const string ValidationsIdEmpty = "Comment.Validations.IdEmpty";
         public const string ValidationsPostIdEmpty = "Comment.Validations.PostIdEmpty";
         public const string ValidationsCommentAuthorIdEmpty = "Comment.Validations.CommentAuthorIdEmpty";
         public const string ValidationsCommentEmptyMessage = "Comment.Validations.EmptyMessage";

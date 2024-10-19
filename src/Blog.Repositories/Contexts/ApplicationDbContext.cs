@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Mvc.Data
+namespace Blog.Repositories.Contexts
 {
     public class ApplicationDbContext : IdentityDbContext
     {

@@ -2,12 +2,8 @@
 using Blog.Entities.Posts;
 using Blog.Mvc.Models;
 using Blog.Services.Abstractions;
-using Blog.Services.Implementations;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace Blog.Mvc.Controllers

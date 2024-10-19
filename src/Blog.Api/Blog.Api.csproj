@@ -13,6 +13,9 @@
     <Content Include="..\.Settings\DatabaseSettings.json" Link="DatabaseSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\.Settings\jwtSettings.json" Link="jwtSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\.Settings\translations-PT.json" Link="translations-PT.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -37,6 +40,10 @@
     <ProjectReference Include="..\Blog.Bases\Blog.Bases.csproj" />
     <ProjectReference Include="..\Blog.Services\Blog.Services.csproj" />
     <ProjectReference Include="..\Blog.Translations\Blog.Translations.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>

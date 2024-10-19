@@ -1,11 +1,10 @@
-using Blog.Api.Data;
-using Blog.Api.Helpers;
+using Blog.Api.Extensions;
 using Blog.AutoMapper.Extensions;
 using Blog.Bases.Settings;
 using Blog.Services.Extensions;
+using Blog.Services.Helpers;
 using Blog.Translations.Extensions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 internal class Program
 {
@@ -17,13 +16,16 @@ internal class Program
         var configBuilder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile(SettingsConstants.AppSettings, optional: false, reloadOnChange: true)
-            .AddJsonFile(SettingsConstants.DatabaseSettings, optional: false, reloadOnChange: true);
+            .AddJsonFile(SettingsConstants.DatabaseSettings, optional: false, reloadOnChange: true)
+            .AddJsonFile(SettingsConstants.JwtSettings, optional: false, reloadOnChange: true);
         var configuration = configBuilder.Build();
 
         builder.Services.Configure<AppSettings>(configuration.GetSection(nameof(AppSettings)));
         builder.Services.Configure<DatabaseSettings>(configuration.GetSection(nameof(DatabaseSettings)));
+        builder.Services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
         DatabaseSettings databaseSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+        JwtSettings jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
         #endregion
 
         #region Extended Services configuration
@@ -31,6 +33,7 @@ internal class Program
         builder.Services.AddMappings();
         builder.Services.AddTranslation();
         builder.Services.AddServices(databaseSettings);
+        builder.Services.AddJwtConfiguration(databaseSettings, jwtSettings);
         #endregion
 
         builder.Services.AddControllers();
@@ -54,12 +57,33 @@ internal class Program
             options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         });
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "Token JWT: Bearer {seu token}",
+                Name = "Authorization",
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey
+            });
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(databaseSettings.ConnectionStringIdentity));
-        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+        });
 
         var app = builder.Build();
 

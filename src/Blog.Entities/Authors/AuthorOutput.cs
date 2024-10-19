@@ -1,6 +1,4 @@
-﻿using Blog.Entities.Posts;
-
-namespace Blog.Entities.Authors
+﻿namespace Blog.Entities.Authors
 {
     public class AuthorOutput
     {
