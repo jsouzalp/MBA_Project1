@@ -13,8 +13,12 @@ namespace Blog.Mvc.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "As senhas não coincidem.")]
+        public string ConfirmPassword { get; set; }
+
         [Required]
-        [Display(Name = "Full Name")]
+        [Display(Name = "Nome de Apresentação")]
         public string FullName { get; set; }
     }
 }

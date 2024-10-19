@@ -26,7 +26,7 @@
             <!-- Campo oculto para passar o PostId -->
             <input type="hidden" name="PostId" value="@Model.Id" />
             <div class="text-end mt-2">
-                <button type="submit" class="btn btn-primary">Enviar Comentário</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Enviar Comentário</button>
             </div>
         </form>
 
@@ -50,7 +50,7 @@
                         <div class="d-flex justify-content-end mt-2">
                             @if (comment.CommentAuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
                             {
-                                <a asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este comentário?');">Excluir</a>
+                                <a asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este comentário?');"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
                             }
                         </div>
                     </div>
