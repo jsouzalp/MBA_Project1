@@ -1,0 +1,45 @@
+﻿/* Estilo para a Navbar */
+.navbar {
+    background-color: #343a40; /* Cor de fundo escura */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+    .navbar .nav-link {
+        color: #ffffff; /* Links brancos */
+    }
+
+        .navbar .nav-link:hover {
+            color: #ffc107; /* Efeito hover em amarelo */
+        }
+
+/* Estilo para o Footer */
+footer {
+    background-color: #343a40; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+    footer a {
+        color: #ffc107; /* Links amarelos */
+    }
+
+        footer a:hover {
+            color: #ffffff; /* Efeito hover nos links */
+        }
+
+/* Adicionando espaçamento no conteúdo principal */
+main {
+    padding-top: 30px;
+}
+
+/* Estilo para os ícones do footer */
+footer .fa {
+    font-size: 24px;
+    padding: 10px;
+    text-decoration: none;
+}
+
+footer .fa:hover {
+    color: #ffc107;
+}

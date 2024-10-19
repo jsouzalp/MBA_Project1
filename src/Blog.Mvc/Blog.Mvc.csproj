@@ -44,4 +44,10 @@
     <ProjectReference Include="..\Blog.Translations\Blog.Translations.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\css\site-custom.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
