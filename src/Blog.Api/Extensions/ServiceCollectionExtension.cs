@@ -10,13 +10,8 @@ namespace Blog.Api.Extensions
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, DatabaseSettings databaseSettings, JwtSettings jwtSettings)
+        public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, JwtSettings jwtSettings)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(databaseSettings.ConnectionStringIdentity));
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
 
             services.AddAuthentication(options =>

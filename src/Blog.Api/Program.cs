@@ -33,7 +33,7 @@ internal class Program
         builder.Services.AddMappings();
         builder.Services.AddTranslation();
         builder.Services.AddServices(databaseSettings);
-        builder.Services.AddJwtConfiguration(databaseSettings, jwtSettings);
+        builder.Services.AddJwtConfiguration(jwtSettings);
         #endregion
 
         builder.Services.AddControllers();

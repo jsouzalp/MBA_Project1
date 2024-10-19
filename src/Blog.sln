@@ -33,10 +33,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".settings", ".settings", "{
 		.Settings\translations-PT.json = .Settings\translations-PT.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Tests", ".Tests", "{04E34E44-21C5-41C0-9B4C-0609F74129BD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Tests.CommentApi", "Blog.Tests.CommentApi\Blog.Tests.CommentApi.csproj", "{95E08743-F3B9-4D21-B7D5-3FA670255056}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Mvc", "Blog.Mvc\Blog.Mvc.csproj", "{1353DAC6-A869-4491-84C7-FF1BD9B574B6}"
 EndProject
 Global
@@ -77,10 +73,6 @@ Global
 		{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95E08743-F3B9-4D21-B7D5-3FA670255056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95E08743-F3B9-4D21-B7D5-3FA670255056}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95E08743-F3B9-4D21-B7D5-3FA670255056}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95E08743-F3B9-4D21-B7D5-3FA670255056}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1353DAC6-A869-4491-84C7-FF1BD9B574B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1353DAC6-A869-4491-84C7-FF1BD9B574B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1353DAC6-A869-4491-84C7-FF1BD9B574B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,9 +80,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{95E08743-F3B9-4D21-B7D5-3FA670255056} = {04E34E44-21C5-41C0-9B4C-0609F74129BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F80AA879-FFFE-4AEF-8DD0-98DD8E8BCB44}
