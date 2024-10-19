@@ -18,20 +18,26 @@ namespace Blog.Api.Controllers
             _postService = postService;
         }
 
-        [HttpGet]
-        public async Task<ServiceOutput<PostOutput>> FilterPostsAsync(ServiceInput<FilterPostInput> input)
+        [HttpGet("filter")]
+        public async Task<ServiceOutput<IEnumerable<PostOutput>>> FilterPostsAsync([FromQuery] FilterPostInput input)
         {
             return await _postService.FilterPostsAsync(input);
         }
 
+        [HttpGet]
+        public async Task<ServiceOutput<PostOutput>> GetPostAsync(Guid id)
+        {
+            return await _postService.GetPostAsync(id);
+        }
+
         [HttpPost]
-        public async Task<ServiceOutput<PostOutput>> CreatePostAsync(ServiceInput<PostInput> input)
+        public async Task<ServiceOutput<PostOutput>> CreatePostAsync([FromBody] ServiceInput<PostInput> input)
         {
             return await _postService.CreatePostAsync(input);
         }
 
         [HttpPut]
-        public async Task<ServiceOutput<PostOutput>> UpdatePostAsync(ServiceInput<PostInput> input)
+        public async Task<ServiceOutput<PostOutput>> UpdatePostAsync([FromBody] ServiceInput<PostInput> input)
         {
             return await _postService.UpdatePostAsync(input);
         }

@@ -18,14 +18,20 @@ namespace Blog.Api.Controllers
             _commentService = commentService;
         }
 
+        [HttpGet]
+        public async Task<ServiceOutput<CommentOutput>> GetCommentAsync(Guid id)
+        {
+            return await _commentService.GetCommentAsync(id);
+        }
+
         [HttpPost]
-        public async Task<ServiceOutput<CommentOutput>> CreateCommentAsync(ServiceInput<CommentInput> input)
+        public async Task<ServiceOutput<CommentOutput>> CreateCommentAsync([FromBody] ServiceInput<CommentInput> input)
         {
             return await _commentService.CreateCommentAsync(input);
         }
 
         [HttpPut]
-        public async Task<ServiceOutput<CommentOutput>> UpdateCommentAsync(ServiceInput<CommentInput> input)
+        public async Task<ServiceOutput<CommentOutput>> UpdateCommentAsync([FromBody] ServiceInput<CommentInput> input)
         {
             return await _commentService.UpdateCommentAsync(input);
         }

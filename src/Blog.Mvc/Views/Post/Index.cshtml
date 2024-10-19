@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PostViewModel>
+
+@{
+    ViewData["Title"] = "Postagens";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Postagens Recentes</h2>
+
+    <!-- Botão para adicionar nova postagem -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="text-right mb-4">
+            <a asp-action="Create" asp-controller="Post" class="btn btn-primary">Nova Postagem</a>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Você precisa estar <a asp-area="Identity" asp-page="/Account/Login">logado</a> para criar uma postagem.
+        </div>
+    }
+
+    <!-- Exibe as postagens -->
+    @if (Model.Any())
+    {
+        @foreach (var post in Model)
+        {
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">@post.Title</h4>
+                    <p class="card-text">@post.Message</p>
+                    <footer class="blockquote-footer">Autor: @post.AuthorName</footer>
+                    <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-primary">Ver Comentários</a>
+                    <a asp-action="Edit" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este post?');">Excluir</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Nenhuma postagem disponível no momento.
+        </div>
+    }
+</div>

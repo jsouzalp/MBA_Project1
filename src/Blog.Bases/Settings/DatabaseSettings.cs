@@ -2,6 +2,7 @@
 {
     public sealed class DatabaseSettings
     {
-        public string ConnectionStringPrincipal { get; set; }
+        public string ConnectionStringBlog { get; set; }
+        public string ConnectionStringIdentity { get; set; }
     }
 }

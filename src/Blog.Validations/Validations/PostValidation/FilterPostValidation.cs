@@ -10,9 +10,11 @@ namespace Blog.Validations.Validations.AuthorValidation
         public FilterPostValidation(ITranslationResource translateResource)
         {
             RuleFor(x => x.AuthorId)
-                .Must(delegate (Guid authorId)
+                .Must(delegate (Guid? authorId)
                 {
-                    return authorId != Guid.Empty;
+                    return authorId.HasValue 
+                        ? authorId != Guid.Empty
+                        : true;
                 })
                 .WithErrorCode(translateResource.GetCodeResource(PostConstant.ValidationsAuthorIdEmpty))
                 .WithMessage(translateResource.GetResource(PostConstant.ValidationsAuthorIdEmpty));

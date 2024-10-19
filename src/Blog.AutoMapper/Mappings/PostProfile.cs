@@ -10,6 +10,7 @@ namespace Blog.AutoMapper.Mappings
             CreateMap<Post, PostOutput>()
                 .ForMember(dest => dest.Id, source => source.MapFrom(src => src.Id))
                 .ForMember(dest => dest.AuthorId, source => source.MapFrom(src => src.AuthorId))
+                .ForMember(dest => dest.AuthorName, source => source.MapFrom(src => src.AuthorName))
                 .ForMember(dest => dest.Date, source => source.MapFrom(src => src.Date))
                 .ForMember(dest => dest.Title, source => source.MapFrom(src => src.Title))
                 .ForMember(dest => dest.Message, source => source.MapFrom(src => src.Message))

@@ -11,7 +11,7 @@ namespace Blog.Repositories.Extensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services, DatabaseSettings databaseSettings)
         {
-            services.AddDbContext<BlogDbContext>(o => o.UseSqlServer(databaseSettings.ConnectionStringPrincipal));            
+            services.AddDbContext<BlogDbContext>(o => o.UseSqlServer(databaseSettings.ConnectionStringBlog));            
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();

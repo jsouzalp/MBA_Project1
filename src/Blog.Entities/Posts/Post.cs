@@ -9,6 +9,7 @@ namespace Blog.Entities.Posts
         #region Attributes
         public Guid Id { get; set; }
         public Guid AuthorId { get; set; }
+        public string AuthorName { get => Author?.Name ?? "Autor não localizado"; }
         public DateTime Date { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }

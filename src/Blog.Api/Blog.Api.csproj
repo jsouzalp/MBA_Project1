@@ -13,9 +13,6 @@
     <Content Include="..\.Settings\DatabaseSettings.json" Link="DatabaseSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\.Settings\translations-EN.json" Link="translations-EN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\.Settings\translations-PT.json" Link="translations-PT.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Blog.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class _0001_InitialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,6 +16,7 @@ namespace Blog.Repositories.Migrations
                 columns: table => new
                 {
                     AUTHOR_ID = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
+                    IDENTITY_USER = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     NAME = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: false)
                 },
                 constraints: table =>
@@ -36,7 +38,7 @@ namespace Blog.Repositories.Migrations
                 {
                     table.PrimaryKey("PK_TB_POST", x => x.POST_ID);
                     table.ForeignKey(
-                        name: "FK_TB_AUTHOR_001",
+                        name: "FK_TB_POST_002",
                         column: x => x.AUTHOR_ID,
                         principalTable: "TB_AUTHOR",
                         principalColumn: "AUTHOR_ID");
@@ -56,10 +58,15 @@ namespace Blog.Repositories.Migrations
                 {
                     table.PrimaryKey("PK_TB_COMMENT", x => x.COMMENT_ID);
                     table.ForeignKey(
-                        name: "FK_TB_POST_001",
+                        name: "FK_TB_COMMENT_001",
                         column: x => x.POST_ID,
                         principalTable: "TB_POST",
                         principalColumn: "POST_ID");
+                    table.ForeignKey(
+                        name: "FK_TB_COMMENT_002",
+                        column: x => x.COMENT_AUTHOR_ID,
+                        principalTable: "TB_AUTHOR",
+                        principalColumn: "AUTHOR_ID");
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,5 +1,6 @@
 ﻿using Blog.Bases;
 using Blog.Entities.Comments;
+using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
 using Blog.Repositories.Entities;
@@ -21,6 +22,40 @@ namespace Blog.Repositories.Implementations
         {
             _context = context;
             _translateResource = translateResource;
+        }
+
+        public async Task<RepositoryOutput<Comment>> GetCommentAsync(Guid id)
+        {
+            RepositoryOutput<Comment> result = new();
+            try
+            {
+                result.Output = await _context.Comments
+                    .Include(x => x.CommentAuthor)
+                    .FirstOrDefaultAsync(x => x.Id == id);
+                
+                if (result.Output != null)
+                {
+                    result.Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCommentSelect), id);
+                }
+                else
+                {
+                    result.Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCommentNotFound), id);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Errors = new List<ErrorBase>()
+                {
+                    new ErrorBase()
+                    {
+                        Code = _translateResource.GetCodeResource(CommentConstant.RepositorySelectCommentError),
+                        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositorySelectCommentError), id),
+                        InternalMessage = ex.ToString()
+                    }
+                };
+            }
+
+            return result;
         }
 
         public async Task<RepositoryOutput<Comment>> CreateCommentAsync(RepositoryInput<Comment> input)

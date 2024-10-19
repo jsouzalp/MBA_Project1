@@ -5,9 +5,6 @@ namespace Blog.Api.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        public BaseController()
-        {
-                
-        }
+        public BaseController(){ }
     }
 }

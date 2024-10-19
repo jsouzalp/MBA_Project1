@@ -6,6 +6,7 @@ namespace Blog.Services.Abstractions
 {
     public interface ICommentService
     {
+        Task<ServiceOutput<CommentOutput>> GetCommentAsync(Guid id);
         Task<ServiceOutput<CommentOutput>> CreateCommentAsync(ServiceInput<CommentInput> input);
         Task<ServiceOutput<CommentOutput>> UpdateCommentAsync(ServiceInput<CommentInput> input);
         Task<ServiceOutput<bool>> RemoveCommentAsync(Guid id);

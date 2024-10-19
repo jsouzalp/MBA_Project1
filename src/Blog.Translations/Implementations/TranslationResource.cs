@@ -19,7 +19,7 @@ namespace Blog.Translations.Implementations
         {
             get
             {
-                _httpContextAccessor.HttpContext.Request.Headers.TryGetValue(RequestConstant.Language, out StringValues languageValue);
+                _httpContextAccessor?.HttpContext?.Request?.Headers?.TryGetValue(RequestConstant.Language, out StringValues languageValue);
                 return (languageValue.FirstOrDefault() ?? _appSettings.DefaultLanguage)[..2];
             }
         }

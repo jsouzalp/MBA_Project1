@@ -12,7 +12,7 @@ namespace Blog.AutoMapper.Mappings
                 .ForMember(dest => dest.PostId, source => source.MapFrom(src => src.PostId))
                 .ForMember(dest => dest.CommentAuthorId, source => source.MapFrom(src => src.CommentAuthorId))
                 .ForMember(dest => dest.Date, source => source.MapFrom(src => src.Date))
-                .ForMember(dest => dest.AuthorName, source => source.MapFrom(src => src.CommentAuthor != null ? src.CommentAuthor.Name : string.Empty))
+                .ForMember(dest => dest.CommentAuthorName, source => source.MapFrom(src => src.CommentAuthorName))
                 .ForMember(dest => dest.Message, source => source.MapFrom(src => src.Message));
 
             CreateMap<CommentInput, Comment>()

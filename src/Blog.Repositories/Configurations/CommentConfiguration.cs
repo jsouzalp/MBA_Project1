@@ -27,7 +27,6 @@ namespace Blog.Repositories.Configurations
                 .HasColumnName("DATE")
                 .HasColumnType(DatabaseTypeConstant.DateTime)
                 .IsRequired();
-            //builder.Property(x=> x.Message).HasColumnType("VarChar(1024)").IsRequired();
             builder.Property(x=> x.Message)
                 .HasColumnName("MESSAGE")
                 .HasColumnType(DatabaseTypeConstant.Varchar)
@@ -53,6 +52,10 @@ namespace Blog.Repositories.Configurations
                 .HasForeignKey(x => x.CommentAuthorId)
                 .HasConstraintName("FK_TB_COMMENT_002")
                 .OnDelete(DeleteBehavior.NoAction);
+            #endregion
+
+            #region Ignores
+            builder.Ignore(x => x.CommentAuthorName);
             #endregion
         }
     }

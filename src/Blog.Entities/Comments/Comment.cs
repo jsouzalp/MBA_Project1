@@ -13,6 +13,7 @@ namespace Blog.Entities.Comments
         public DateTime Date {get; set; }
         public string Message { get; set; }
         public Author CommentAuthor { get; set; }
+        public string CommentAuthorName { get => CommentAuthor?.Name ?? "Autor do comentário não localizado"; }
         #endregion
 
         #region Helper only for EF Mapping

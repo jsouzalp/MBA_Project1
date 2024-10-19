@@ -8,6 +8,7 @@ namespace Blog.Entities.Authors
     {
         #region Attributes
         public Guid Id { get; set; }
+        public Guid IdentityUser { get; set; }
         public string Name { get; set; }
         public ICollection<Post> Posts { get; set; }
         #endregion

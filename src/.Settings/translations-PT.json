@@ -38,6 +38,7 @@
     },
     "Repository": {
       "Info": {
+        "PostSelect": "Postagem {0} localizada com sucesso",
         "PostCreated": "Postagem {0} criada com sucesso",
         "PostUpdated": "Postagem {0} atualizada com sucesso",
         "PostRemoved": "Postagem {0} removida com sucesso",
@@ -48,6 +49,7 @@
         "FilterPostNotFound": "Postagens do Autor {0} da página {1} não localizado"
       },
       "Error": {
+        "SelectError": "Erro ao obter postagem {0}",
         "FilterPostError": "Erro ao obter postagens do Autor {0}",
         "CreatePostError": "Erro ao criar a postagem {0}",
         "UpdatePostError": "Erro ao atualizar a postagem {0}",
@@ -65,6 +67,7 @@
     },
     "Repository": {
       "Info": {
+        "CommentSelect": "Comentário {0} localizado com sucesso",
         "CommentCreated": "Comentário {0} criado com sucesso",
         "CommentUpdated": "Comentário {0} atualizado com sucesso",
         "CommentRemoved": "Comentário {0} removido com sucesso"
@@ -73,6 +76,7 @@
         "CommentNotFound": "Comentário {0} não localizado"
       },
       "Error": {
+        "SelectCommentError": "Erro ao obter comentário {0}",
         "CreateCommentError": "Erro ao criar comentário {0}",
         "UpdateCommentError": "Erro ao atualizar comentário {0}",
         "RemoveCommentError": "Erro ao remover comentário {0}"

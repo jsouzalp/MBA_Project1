@@ -53,6 +53,10 @@ namespace Blog.Repositories.Configurations
                 .HasConstraintName("FK_TB_POST_002")
                 .OnDelete(DeleteBehavior.NoAction);
             #endregion
+
+            #region Ignores
+            builder.Ignore(x => x.AuthorName);
+            #endregion
         }
     }
 }

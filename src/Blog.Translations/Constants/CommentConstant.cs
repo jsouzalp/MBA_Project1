@@ -11,6 +11,7 @@
         #endregion
 
         #region Repository
+        public const string RepositoryCommentSelect = "Comment.Repository.Info.CommentSelect";
         public const string RepositoryCommentCreated = "Comment.Repository.Info.CommentCreated";
         public const string RepositoryCommentUpdated = "Comment.Repository.Info.CommentUpdated";
         public const string RepositoryCommentRemoved = "Comment.Repository.Info.CommentRemoved";
@@ -18,6 +19,7 @@
         #endregion
 
         #region Errors
+        public const string RepositorySelectCommentError = "Comment.Repository.Error.SelectCommentError";
         public const string RepositoryCreateCommentError = "Comment.Repository.Error.CreateCommentError";
         public const string RepositoryUpdateCommentError = "Comment.Repository.Error.UpdateCommentError";
         public const string RepositoryRemoveCommentError = "Comment.Repository.Error.RemoveCommentError";

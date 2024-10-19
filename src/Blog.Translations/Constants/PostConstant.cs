@@ -13,7 +13,8 @@
         public const string ValidationsPostFilterRecordsPerPage = "Post.Validations.FilterRecordsPerPage";
         #endregion
 
-        #region Repository
+        #region Repository        
+        public const string RepositoryPostSelect = "Post.Repository.Info.PostSelect";
         public const string RepositoryPostCreated = "Post.Repository.Info.PostCreated";
         public const string RepositoryPostUpdated = "Post.Repository.Info.PostUpdated";
         public const string RepositoryPostRemoved = "Post.Repository.Info.PostRemoved";
@@ -23,6 +24,8 @@
         #endregion
 
         #region Errors
+        
+        public const string RepositorySelectError = "Post.Repository.Error.SelectError";
         public const string RepositoryFilterPostError = "Post.Repository.Error.FilterPostError";
         public const string RepositoryCreatePostError = "Post.Repository.Error.CreatePostError";
         public const string RepositoryUpdatePostError = "Post.Repository.Error.UpdatePostError";
