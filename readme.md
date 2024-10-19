@@ -56,7 +56,7 @@ A estrutura do projeto é organizada da seguinte forma:
   - Blog.Services/
   - Blog.Translations/
   - Blog.Validations/
-  - Blog.Web/
+  - Blog.Mvc/
 - readme.md - Arquivo de Documentação do Projeto
 - feedback.md - Arquivo para Consolidação dos Feedbacks
 - .gitignore - Arquivo de "ignores" do Git
@@ -82,18 +82,26 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
    - `git clone https://github.com/jsouzalp/MBA_Project1.git`
 
 2. **Configuração do Banco de Dados:**
-   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQL Server.
+   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQL Server para o database *ConnectionStringBlog*.
    - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
    - Instalar o dotnet ef (caso não tenha feito ainda):
      - dotnet tool install --global dotnet-ef
    - Para executar o migration:
-     - dotnet ef migrations add 0001_InitialMigration --project ..\Blog.Repositories --startup-project ..\Blog.Api --no-build
+     - dotnet ef migrations add InitialMigration --project .\Blog.Repositories --startup-project .\Blog.Mvc --context BlogDbContext
    - Para remover o migration:
-     - dotnet ef migrations remove --project ..\Blog.Repositories --startup-project ..\Blog.Api --no-build
+     - dotnet ef migrations remove --project .\Blog.Repositories --startup-project .\Blog.Mvc --context BlogDbContext
    - Para ver o script que será gerado:
      - dotnet ef migrations script --no-build
    - Para sincronizar com o BD:
-     - dotnet ef database update
+     - dotnet ef database update --project .\Blog.Mvc --context BlogDbContext
+
+2. **Configuração do Banco de Dados de Autenticação (Identity):**
+   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQL Server para o database *ConnectionStringIdentity*.
+   - Instalar o dotnet ef (caso não tenha feito ainda):
+     - dotnet tool install --global dotnet-ef
+   - Navegar para a pasta do projeto .\Blog.Mvc
+   - Para executar o migration do *Identity*:
+     - dotnet ef database update --project .\Blog.Mvc --context ApplicationDbContext
 
 3. **Executar a Aplicação MVC:**
    - `cd src/Blog.Mvc/`
