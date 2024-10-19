@@ -10,29 +10,21 @@ namespace Blog.Api.Controllers
         public BaseController(){ }
 
         internal ActionResult<ServiceOutput<T>> GenerateResponse<T>(ServiceOutput<T> result,
-            int responseStatus,
-            [CallerMemberName] string caller = "")
+            int responseStatus)
         {
             if (!result.Success && result.Errors != null)
             {
-                return BadRequest(result);
+                responseStatus = StatusCodes.Status400BadRequest;
             }
             else if (result.Success && result.Output == null)
             {
-                return NotFound(result);
+                responseStatus = StatusCodes.Status404NotFound;
             }
-            else
+
+            return new JsonResult(result)
             {
-                switch (responseStatus)
-                {
-                    case StatusCodes.Status201Created:
-                        return CreatedAtAction(caller, result);
-                    case StatusCodes.Status204NoContent:
-                    case StatusCodes.Status200OK:
-                    default:
-                        return Ok(result);
-                }
-            }
+                StatusCode = responseStatus
+            };
         }
     }
 }

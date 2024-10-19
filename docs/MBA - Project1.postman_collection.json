@@ -1,0 +1,619 @@
+{
+	"info": {
+		"_postman_id": "c8be6e37-b37e-40dc-be28-8cb1cd6b0ff0",
+		"name": "MBA - Project1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3078282"
+	},
+	"item": [
+		{
+			"name": "Author",
+			"item": [
+				{
+					"name": "Delete Author",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/author?id={{AuthorId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"author"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{AuthorId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Author",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{AuthorId}}\",\r\n    \"IdentityUser\": \"{{AuthorId}}\",\r\n    \"Name\": \"Jairo Azevedo de Souza\",\r\n    \"Posts\": []\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/author",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Author",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{AuthorId}}\",\r\n    \"Name\": \"Jairo Azevedo\",\r\n    \"Posts\": []\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/author",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/author?id={{AuthorId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"author"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{AuthorId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Get Post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/post",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{PostId}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/post?Page=1&RecordsPerPage=5",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							],
+							"query": [
+								{
+									"key": "AuthorId",
+									"value": "{{AuthorId}}",
+									"disabled": true
+								},
+								{
+									"key": "Page",
+									"value": "1"
+								},
+								{
+									"key": "RecordsPerPage",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var now = new Date();\r",
+									"var timestamp = now.toISOString();\r",
+									"pm.environment.set(\"CurrentDate\", timestamp);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var postId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"PostId\", postId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"AuthorId\": \"{{AuthorId}}\",\r\n    \"Title\": \"Postagem de {{CurrentDate}}\",\r\n    \"Message\": \"Esta é uma mensagem gerada as {{CurrentDate}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/post",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var now = new Date();\r",
+									"var timestamp = now.toISOString();\r",
+									"pm.environment.set(\"CurrentDate\", timestamp);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var postId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"PostId\", postId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\":\"{{PostId}}\",\r\n    \"AuthorId\": \"{{AuthorId}}\",\r\n    \"Title\": \"Postagem alterada de {{CurrentDate}}\",\r\n    \"Message\": \"Esta é uma mensagem alterada as {{CurrentDate}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/post",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var now = new Date();\r",
+									"var timestamp = now.toISOString();\r",
+									"pm.environment.set(\"CurrentDate\", timestamp);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var postId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"PostId\", postId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/post?Id={{PostId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "{{PostId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var now = new Date();\r",
+									"var timestamp = now.toISOString();\r",
+									"pm.environment.set(\"CurrentDate\", timestamp);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var commentId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"CommentId\", commentId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"PostId\": \"{{PostId}}\",\r\n    \"CommentAuthorId\": \"{{AuthorId}}\",\r\n    \"Message\": \"Comentário criado em {{CurrentDate}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/comment",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var now = new Date();\r",
+									"var timestamp = now.toISOString();\r",
+									"pm.environment.set(\"CurrentDate\", timestamp);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var commentId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"CommentId\", commentId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{CommentId}}\",\r\n    \"PostId\": \"{{PostId}}\",\r\n    \"CommentAuthorId\": \"{{AuthorId}}\",\r\n    \"Message\": \"Comentário Alterado em {{CurrentDate}}\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/comment",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var now = new Date();\r",
+									"var timestamp = now.toISOString();\r",
+									"pm.environment.set(\"CurrentDate\", timestamp);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var commentId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"CommentId\", commentId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/comment?id={{CommentId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{CommentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/comment?id={{CommentId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{CommentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AuthorId",
+			"value": "307a1189-5d7e-460e-bec9-5182e7c6c727",
+			"type": "string"
+		},
+		{
+			"key": "PostId",
+			"value": "482ebb2d-5c5e-4c93-8de1-e505d9d7c4cd",
+			"type": "string"
+		},
+		{
+			"key": "_BaseEndpoint",
+			"value": "https://localhost:5001",
+			"type": "string"
+		},
+		{
+			"key": "CommentId",
+			"value": "efbe156b-6d2e-456c-a0be-815b64647dee",
+			"type": "string"
+		},
+		{
+			"key": "CurrentDate",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "CommentAuthorId",
+			"value": "4e7a3c4b-16ce-485f-bc30-0da09a6dfb3f",
+			"type": "string"
+		}
+	]
+}

@@ -38,23 +38,23 @@ namespace Blog.Api.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ServiceOutput<CommentOutput>>> UpdateCommentAsync([FromBody] ServiceInput<CommentInput> input)
         {
             var result = await _commentService.UpdateCommentAsync(input);
-            return GenerateResponse(result, StatusCodes.Status204NoContent);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
         [HttpDelete]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ServiceOutput<bool>>> RemoveCommentAsync(Guid id)
         {
             var result = await _commentService.RemoveCommentAsync(id);
-            return GenerateResponse(result, StatusCodes.Status204NoContent);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
     }
 }

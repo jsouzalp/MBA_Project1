@@ -98,6 +98,7 @@ namespace Blog.Repositories.Implementations
                 if (author != null)
                 {
                     input.Input.FillKeys();
+                    input.Input.IdentityUser = author.IdentityUser;
                     _context.Authors.Update(input.Input);
                     _ = await _context.SaveChangesAsync();
                     result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorUpdated), input.Input.Name);

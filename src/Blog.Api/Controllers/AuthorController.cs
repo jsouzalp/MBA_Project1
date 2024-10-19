@@ -39,23 +39,23 @@ namespace Blog.Api.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ServiceOutput<AuthorOutput>>> UpdateAuthorAsync([FromBody] ServiceInput<AuthorInput> input)
         {
             var result = await _authorService.UpdateAuthorAsync(input);
-            return GenerateResponse(result, StatusCodes.Status204NoContent);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
         [HttpDelete]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ServiceOutput<bool>>> RemoveAuthorAsync(Guid id)
         {
             var result = await _authorService.RemoveAuthorAsync(id);
-            return GenerateResponse(result, StatusCodes.Status204NoContent);
+            return GenerateResponse(result, StatusCodes.Status200OK);
         }
     }
 }
