@@ -1,6 +1,5 @@
 ﻿using Blog.Services.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace Blog.Api.Controllers
 {
