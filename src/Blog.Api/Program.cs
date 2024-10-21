@@ -39,12 +39,17 @@ internal class Program
         builder.Services.AddControllers();
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowSpecificOrigin",
-                builder => builder
-                    .WithOrigins("*")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+            options.AddPolicy("Dev", builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+
+            options.AddPolicy("Prod", builder =>
+                builder.WithOrigins("https://localhost:5001")
+                    //.WithMethods("POST")
+                    .AllowAnyHeader());
         });
+
         //builder.Services.AddControllers(options =>
         //{
         //    options.Filters.Add<LoggingExceptionFilter>();
@@ -91,6 +96,11 @@ internal class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseCors("Dev");
+        }
+        else
+        {
+            app.UseCors("Prod");
         }
 
         app.UseStaticFiles();
