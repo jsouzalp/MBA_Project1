@@ -2,10 +2,12 @@
 using Blog.Entities.Comments;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Area("comment")]
     [Route("api/v1/[area]")]
@@ -47,6 +49,7 @@ namespace Blog.Api.Controllers
             return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

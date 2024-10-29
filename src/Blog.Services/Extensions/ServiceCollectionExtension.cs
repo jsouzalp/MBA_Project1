@@ -19,7 +19,8 @@ namespace Blog.Services.Extensions
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
-            
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             return services;
         }
     }

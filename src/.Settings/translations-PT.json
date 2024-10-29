@@ -1,4 +1,24 @@
 ﻿{
+  "Authentication": {
+    "Service": {
+      "Validations": {
+        "NullFullName": "Nome completo não pode ser nulo",
+        "EmptyFullName": "Nome completo não pode ser vazio",
+        "NullEmail": "Email não pode ser nulo",
+        "EmptyEmail": "Email não pode ser vazio",
+        "NullSenha": "Senha não pode ser nulo",
+        "EmptySenha": "Senha não pode ser vazia"
+      },
+      "Info": {
+        "Success": "Login realizado com sucesso"
+      },
+      "Error": {
+        "NotDefined": "Problemas com seu acesso à plataforma",
+        "LoginBlocked": "Este login encontra-se bloqueado",
+        "NotAllowed": "Usuário e senha não localizado"
+      }
+    }
+  },
   "Guid": {
     "Validations": {
       "IdEmpty": "ID não pode ser vazio"

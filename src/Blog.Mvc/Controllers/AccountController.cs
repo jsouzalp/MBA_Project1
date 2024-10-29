@@ -1,20 +1,16 @@
 ﻿using Blog.Bases.Services;
+using Blog.Entities.Authentication;
 using Blog.Entities.Authors;
 using Blog.Mvc.Models;
-using Blog.Services.Abstractions;
-using Microsoft.AspNetCore.Identity;
+using Blog.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 public class AccountController : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IAuthorService _authorService;
-
-    public AccountController(UserManager<IdentityUser> userManager,
-        IAuthorService authorService)
+    private readonly AuthenticationService _authenticationService;
+    public AccountController(AuthenticationService authenticationService)
     {
-        _userManager = userManager;
-        _authorService = authorService;
+        _authenticationService = authenticationService;
     }
 
     [HttpGet]
@@ -28,37 +24,27 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email, NormalizedUserName = model.FullName, EmailConfirmed = true };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            var result = await _authenticationService.RegisterUserAsync(new ServiceInput<AuthenticationInput>()
             {
-                _ = _authorService.CreateAuthorAsync(new ServiceInput<AuthorInput>()
+                Input = new AuthenticationInput()
                 {
-                    Input = new AuthorInput()
-                    {
-                        Id = Guid.Parse(user.Id), 
-                        IdentityUser = Guid.Parse(user.Id),
-                        Name = model.FullName
-                    }
-                }).Result;
+                    Email = model.Email,
+                    Password = model.Password,
+                    FullName = model.FullName
+                }
+            });
 
+            if (result.Success)
+            {
                 return RedirectToAction("Index", "Post");
             }
 
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError(error.Code, error.Message);
             }
         }
 
-        // Se algo deu errado, retorne a view de registro com erros
         return View(model);
-    }
-
-    private async Task ExecuteSpecificAction(string userId)
-    {
-        // Implementação da ação específica que usa o userId
-        // Por exemplo, criar uma entrada em outra tabela do banco de dados
     }
 }
