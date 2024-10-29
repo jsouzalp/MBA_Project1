@@ -12,6 +12,8 @@ namespace Blog.Mvc.Models
 
         public string CommentAuthorName { get; set; }
 
+        public DateTime Date { get; set; }
+
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(1024, MinimumLength = 5, ErrorMessage = "O campo {0} precisa ter entre {1} e {2} caracteres")]
         [Display(Name = "Comentário")]

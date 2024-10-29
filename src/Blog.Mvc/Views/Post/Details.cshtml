@@ -33,6 +33,7 @@
         <div class="card mt-4">
             <div class="card-body">
                 <h2 class="card-title">@Model.Title</h2>
+                <h6 class="card-title">Feito em @Model.Date.ToString("dd/MM/yyyy HH:mm")</h6>
                 <p class="card-text">@Model.Message</p>
             </div>
         </div>
@@ -46,6 +47,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h6 class="card-title">Autor: <cite title="Source Title">@comment.CommentAuthorName</cite></h6>
+                        <h6 class="card-title">Data: <cite title="Date Title">@comment.Date.ToString("dd/MM/yyyy HH:mm")</cite></h6>
                         <p>@comment.Message</p>
                         <div class="d-flex justify-content-end mt-2">
                             @if (comment.CommentAuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))

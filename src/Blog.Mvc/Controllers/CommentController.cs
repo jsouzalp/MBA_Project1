@@ -56,7 +56,7 @@ namespace Blog.Mvc.Controllers
         public IActionResult Delete(Guid id)
         {
             var comment = _commentService.GetCommentAsync(id).Result;
-            if (comment == null || comment.Output == null)
+            if (comment == null || comment.Output == null || comment.Output.CommentAuthorId != Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
             {
                 return NotFound();
             }

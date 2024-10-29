@@ -36,6 +36,7 @@ namespace Blog.Mvc.Controllers
                               Id = x.Id,
                               AuthorId = x.AuthorId,
                               AuthorName = x.AuthorName,
+                              Date = x.Date,
                               Title = x.Title,
                               Message = x.Message
                           }).ToList();
@@ -96,6 +97,7 @@ namespace Blog.Mvc.Controllers
                 Id = post.Output.Id,
                 AuthorId = post.Output.AuthorId,
                 AuthorName = post.Output.AuthorName,
+                Date = post.Output.Date,
                 Title = post.Output.Title,  
                 Message = post.Output.Message,
                 Comments = (from x in post.Output.Comments
@@ -105,6 +107,7 @@ namespace Blog.Mvc.Controllers
                                 PostId = x.PostId,
                                 CommentAuthorId = x.CommentAuthorId,
                                 CommentAuthorName = x.CommentAuthorName,
+                                Date = x.Date,
                                 Message = x.Message
                             }).ToList()
             };
@@ -129,6 +132,7 @@ namespace Blog.Mvc.Controllers
                     Id = post.Output.Id,
                     AuthorId = post.Output.AuthorId,
                     AuthorName = post.Output.AuthorName,
+                    Date = post.Output.Date,
                     Title = post.Output.Title,
                     Message = post.Output.Message
                 };
@@ -169,7 +173,7 @@ namespace Blog.Mvc.Controllers
         public IActionResult Delete(Guid id)
         {
             var post = _postService.GetPostAsync(id).Result;
-            if (post == null)
+            if (post == null || post.Output == null || post.Output.AuthorId != Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
             {
                 return NotFound();
             }

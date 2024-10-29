@@ -30,7 +30,7 @@ O projeto consiste em:
   - AutoMapper
   - FluentValidations
 - **Banco de Dados:** 
-  - SQL Server
+  - SQLite
 - **Autenticação e Autorização:**
   - ASP.NET Core Identity
   - JWT (JSON Web Token) para autenticação na API
@@ -66,12 +66,15 @@ A estrutura do projeto é organizada da seguinte forma:
 - **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
 
 ## **6. Como Executar o Projeto**
-Para execução do projeto, é necessário ter uma instância do Sqlserver configurada no seu computador e um database vazio previamente configurado.
 Para criação da estrutura de dados, é necessário localizar o arquivo *DatabaseSettings.json* e configurar nele a string de conexão. Após configurado, deve ser executado o migrations para criação da estrutura de tabelas:
+
+## **Extensions do Visual Studio**
+- Para visualização dos dados na base de dados criada (verifique a pasta ".\data") pelo Visual Studio, é necessária a instalação da extension "SQLite/SQL Server Compact Toolbox"
+- Para um "deep-clean" dos arquivos temporários da solução, recomendo a instalação da extension "Open Command Line". Esta extension facilitará o uso do pacote ClearBinObj.cmd (veja em .helpers)
 
 ### **Pré-requisitos**
 - .NET SDK 6.0 ou superior
-- SQL Server
+- SQLite
 - Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
 - Git
 
@@ -80,7 +83,7 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
    - `git clone https://github.com/jsouzalp/MBA_Project1.git`
 
 2. **Configuração do Banco de Dados:**
-   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQL Server para o database *ConnectionStringBlog*.
+   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQLite para o database *ConnectionStringBlog*.
    - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
    - Instalar o dotnet ef (caso não tenha feito ainda):
      - dotnet tool install --global dotnet-ef
@@ -94,7 +97,7 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
      - dotnet ef database update --project .\Blog.Mvc --context BlogDbContext
 
 2. **Configuração do Banco de Dados de Autenticação (Identity):**
-   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQL Server para o database *ConnectionStringIdentity*.
+   - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQLite para o database *ConnectionStringIdentity*.
    - Instalar o dotnet ef (caso não tenha feito ainda):
      - dotnet tool install --global dotnet-ef
    - Navegar para a pasta do projeto .\Blog.Mvc

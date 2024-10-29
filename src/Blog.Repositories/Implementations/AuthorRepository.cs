@@ -10,6 +10,7 @@ using Blog.Translations.Abstractions;
 using Blog.Translations.Constants;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Blog.Repositories.Implementations
 {
@@ -137,7 +138,8 @@ namespace Blog.Repositories.Implementations
 
                 if (author != null)
                 {
-                    using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    //using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    using (var transaction = await _context.Database.BeginTransactionAsync())
                     {
                         foreach (Post post in author.Posts)
                         {
@@ -150,7 +152,8 @@ namespace Blog.Repositories.Implementations
                         _ = _context.Authors.Remove(author);
                         _ = await _context.SaveChangesAsync();
 
-                        transaction.Complete();
+                        await transaction.CommitAsync();
+                        //transaction.Complete();
                         result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorRemoved), author.Name);
                         result.Output = true;
                     }

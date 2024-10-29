@@ -52,6 +52,7 @@ namespace Blog.Services.Implementations
             {
                 var user = new IdentityUser()
                 {
+                    //Id = Guid.NewGuid().ToString(),
                     UserName = registerUser.Input.Email,
                     Email = registerUser.Input.Email,
                     NormalizedUserName = registerUser.Input.FullName,

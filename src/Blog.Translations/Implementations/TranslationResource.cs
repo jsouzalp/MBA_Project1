@@ -15,11 +15,13 @@ namespace Blog.Translations.Implementations
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppSettings _appSettings;
         private readonly Dictionary<string, List<Resource>> _translations;
-        private string _language
+
+        private string Language
         {
             get
             {
-                _httpContextAccessor?.HttpContext?.Request?.Headers?.TryGetValue(RequestConstant.Language, out StringValues languageValue);
+                StringValues languageValue = new();
+                _httpContextAccessor?.HttpContext?.Request?.Headers?.TryGetValue(RequestConstant.Language, out languageValue);
                 return (languageValue.FirstOrDefault() ?? _appSettings.DefaultLanguage)[..2];
             }
         }
@@ -102,7 +104,7 @@ namespace Blog.Translations.Implementations
 
         public string GetResource(string key)
         {
-            if (_translations.TryGetValue(_language.ToUpper(), out var translations))
+            if (_translations.TryGetValue(Language.ToUpper(), out var translations))
             {
                 var localizedPath = translations.FirstOrDefault(x => string.Equals(x.Path, key, StringComparison.OrdinalIgnoreCase));
                 if (localizedPath != null)
@@ -116,7 +118,7 @@ namespace Blog.Translations.Implementations
 
         public string GetCodeResource(string path)
         {
-            if (_translations.TryGetValue(_language.ToUpper(), out var translations))
+            if (_translations.TryGetValue(Language.ToUpper(), out var translations))
             {
                 var localizedPath = translations.FirstOrDefault(x => string.Equals(x.Path, path, StringComparison.OrdinalIgnoreCase));
                 if (localizedPath != null)

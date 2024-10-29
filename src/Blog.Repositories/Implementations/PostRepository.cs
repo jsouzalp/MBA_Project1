@@ -184,7 +184,8 @@ namespace Blog.Repositories.Implementations
 
                 if (post != null)
                 {
-                    using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    //using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    using (var transaction = await _context.Database.BeginTransactionAsync())
                     {
                         foreach (Comment comment in post.Comments)
                         {
@@ -193,7 +194,8 @@ namespace Blog.Repositories.Implementations
                         _ = _context.Posts.Remove(post);
                         _ = await _context.SaveChangesAsync();
 
-                        transaction.Complete();
+                        //transaction.Complete();
+                        await transaction.CommitAsync();
                         result.Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryPostRemoved), post.Id);
                         result.Output = true;
                     }

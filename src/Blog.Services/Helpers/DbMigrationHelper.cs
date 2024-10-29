@@ -44,6 +44,7 @@ namespace Blog.Services.Helpers
                 Guid authorId1 = Guid.NewGuid();
                 Guid authorId2 = Guid.NewGuid();
 
+                //var user1 = new IdentityUser { Id = Guid.NewGuid().ToString(), UserName = "cath.lp@gmail.com", Email = "cath.lp@gmail.com", EmailConfirmed = true };
                 var user1 = new IdentityUser { UserName = "cath.lp@gmail.com", Email = "cath.lp@gmail.com", EmailConfirmed = true };
                 var result1 = await userManager.CreateAsync(user1, "123");
 
@@ -52,6 +53,7 @@ namespace Blog.Services.Helpers
                     authorId1 = Guid.Parse(user1.Id);
                 }
 
+                //var user2 = new IdentityUser { Id = Guid.NewGuid().ToString(), UserName = "jsouza.lp@gmail.com", Email = "jsouza.lp@gmail.com", EmailConfirmed = true };
                 var user2 = new IdentityUser { UserName = "jsouza.lp@gmail.com", Email = "jsouza.lp@gmail.com", EmailConfirmed = true };
                 var result2 = await userManager.CreateAsync(user2, "123");
 
@@ -74,6 +76,7 @@ namespace Blog.Services.Helpers
                 await context.Authors.AddAsync(new Author()
                 {
                     Id = authorId2,
+                    IdentityUser = authorId2,
                     Name = "Jairo Azevedo",
                     Posts = new List<Post>()
                     {

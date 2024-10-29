@@ -10,6 +10,8 @@ namespace Blog.Mvc.Models
 
         public string AuthorName { get; set; }
 
+        public DateTime Date { get; set; }
+
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(100, MinimumLength = 5, ErrorMessage = "O campo {0} precisa ter entre {1} e {2} caracteres")]
         [Display(Name = "Título do Post")]

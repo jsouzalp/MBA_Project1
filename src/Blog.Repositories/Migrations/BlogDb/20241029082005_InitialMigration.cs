@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Blog.Repositories.Migrations
+namespace Blog.Repositories.Migrations.BlogDb
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -16,7 +17,7 @@ namespace Blog.Repositories.Migrations
                 {
                     AUTHOR_ID = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     IDENTITY_USER = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
-                    NAME = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: false)
+                    NAME = table.Column<string>(type: "Varchar", maxLength: 1024, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,8 +31,8 @@ namespace Blog.Repositories.Migrations
                     POST_ID = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     AUTHOR_ID = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     DATE = table.Column<DateTime>(type: "DateTime", nullable: false),
-                    TITLE = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: false),
-                    MESSAGE = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: false)
+                    TITLE = table.Column<string>(type: "Varchar", maxLength: 100, nullable: false),
+                    MESSAGE = table.Column<string>(type: "Varchar", maxLength: 1024, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +52,7 @@ namespace Blog.Repositories.Migrations
                     POST_ID = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     COMENT_AUTHOR_ID = table.Column<Guid>(type: "UniqueIdentifier", nullable: false),
                     DATE = table.Column<DateTime>(type: "DateTime", nullable: false),
-                    MESSAGE = table.Column<string>(type: "Varchar(1024)", maxLength: 1024, nullable: false)
+                    MESSAGE = table.Column<string>(type: "Varchar", maxLength: 1024, nullable: false)
                 },
                 constraints: table =>
                 {
