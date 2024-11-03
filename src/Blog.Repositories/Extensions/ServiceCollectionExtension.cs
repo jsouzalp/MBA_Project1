@@ -15,7 +15,7 @@ namespace Blog.Repositories.Extensions
             //services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(databaseSettings.ConnectionStringIdentity));
             services.AddDbContext<ApplicationDbContext>(o => o.UseSqlite(databaseSettings.ConnectionStringIdentity));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -23,7 +23,9 @@ namespace Blog.Repositories.Extensions
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 1;
                 options.Password.RequiredUniqueChars = 0;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddRoles<IdentityRole>()
+              .AddDefaultTokenProviders();
 
             services.AddDbContext<BlogDbContext>(o => o.UseSqlite(databaseSettings.ConnectionStringBlog));            
             services.AddScoped<IAuthorRepository, AuthorRepository>();

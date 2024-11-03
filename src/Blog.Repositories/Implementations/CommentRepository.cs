@@ -10,17 +10,48 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Repositories.Implementations
 {
-    public partial class CommentRepository : ICommentRepository
+    public partial class CommentRepository : RepositoryBase, ICommentRepository
     {
-        // TODO :: Colocar o tratamento de exception em um extension
-
         private readonly BlogDbContext _context;
-        private readonly ITranslationResource _translateResource;
 
         public CommentRepository(BlogDbContext context, ITranslationResource translateResource)
+            : base(translateResource)
         {
             _context = context;
-            _translateResource = translateResource;
+        }
+
+        public async Task<RepositoryOutput<Comment>> GetInternalCommentAsync(Guid id)
+        {
+            RepositoryOutput<Comment> result = new();
+            try
+            {
+                result.Output = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (result.Output != null)
+                {
+                    result.Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCommentSelect), id);
+                }
+                else
+                {
+                    result.Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCommentNotFound), id);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositorySelectCommentError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositorySelectCommentError),
+                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositorySelectCommentError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
+            }
+
+            return result;
         }
 
         public async Task<RepositoryOutput<Comment>> GetCommentAsync(Guid id)
@@ -43,15 +74,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(CommentConstant.RepositorySelectCommentError),
-                        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositorySelectCommentError), id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositorySelectCommentError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositorySelectCommentError),
+                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositorySelectCommentError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -70,15 +103,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryCreateCommentError),
-                        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCreateCommentError), input.Input.Id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositoryCreateCommentError, new object[] { input.Input.Id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryCreateCommentError),
+                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCreateCommentError), input.Input.Id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -109,15 +144,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryUpdateCommentError),
-                        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryUpdateCommentError), input.Input.Id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositoryUpdateCommentError, new object[] { input.Input.Id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryUpdateCommentError),
+                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryUpdateCommentError), input.Input.Id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -146,15 +183,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryRemoveCommentError),
-                        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryRemoveCommentError), id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositoryRemoveCommentError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryRemoveCommentError),
+                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryRemoveCommentError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;

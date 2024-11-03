@@ -14,17 +14,14 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Blog.Repositories.Implementations
 {
-    public partial class AuthorRepository : IAuthorRepository
+    public partial class AuthorRepository : RepositoryBase, IAuthorRepository
     {
-        // TODO :: Colocar o tratamento de exception em um extension
-
         private readonly BlogDbContext _context;
-        private readonly ITranslationResource _translateResource;
 
-        public AuthorRepository(BlogDbContext context, ITranslationResource translateResource)
+        public AuthorRepository(BlogDbContext context, ITranslationResource translateResource) 
+            : base(translateResource)
         {
             _context = context;
-            _translateResource = translateResource;
         }
 
         public async Task<RepositoryOutput<Author>> GetAuthorByIdAsync(Guid id)
@@ -46,15 +43,7 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryGetAuthorError),
-                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryGetAuthorError), id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryGetAuthorError, new object[] { id });
             }
 
             return result;
@@ -73,15 +62,16 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryInsertAuthorError),
-                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryInsertAuthorError), input.Input.Name),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryInsertAuthorError, new object[] { input.Input.Name });
+
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryInsertAuthorError),
+                //        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryInsertAuthorError), input.Input.Name),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -113,15 +103,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryUpdateAuthorError),
-                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryUpdateAuthorError), input.Input.Name),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryUpdateAuthorError, new object[] { input.Input.Name });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryUpdateAuthorError),
+                //        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryUpdateAuthorError), input.Input.Name),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -166,15 +158,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryRemoveAuthorError),
-                        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryRemoveAuthorError), id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryRemoveAuthorError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryRemoveAuthorError),
+                //        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryRemoveAuthorError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;

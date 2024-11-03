@@ -18,6 +18,7 @@ namespace Blog.Mvc.Controllers
             _postService = postService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var posts = _postService.FilterPostsAsync(new Entities.Posts.FilterPostInput()
@@ -173,13 +174,7 @@ namespace Blog.Mvc.Controllers
         public IActionResult Delete(Guid id)
         {
             var post = _postService.GetPostAsync(id).Result;
-            if (post == null || post.Output == null || post.Output.AuthorId != Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
-            {
-                return NotFound();
-            }
-
             var result = _postService.RemovePostAsync(id).Result;
-
             return RedirectToAction(nameof(Index));
         }
     }

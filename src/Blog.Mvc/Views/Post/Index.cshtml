@@ -18,11 +18,10 @@
     else
     {
         <div class="alert alert-warning" role="alert">
-            Você precisa estar <a asp-area="Identity" asp-page="/Account/Login">logado</a> para criar uma postagem.
+            Você precisa estar <a asp-area="" asp-controller="Account" asp-action="Login">logado</a> para criar uma postagem.
         </div>
     }
 
-    <!-- Exibe as postagens -->
     @if (Model.Any())
     {
         @foreach (var post in Model)
@@ -36,14 +35,35 @@
                     <p class="card-text">@post.Message</p>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
-                    <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-primary btn-sm"><i class="fa fa-search" aria-hidden="true"></i> Ver Comentários</a>
-                    @if (post.AuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                    @if (User.Identity.IsAuthenticated)
                     {
+                        <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-primary btn-sm"><i class="fa fa-search" aria-hidden="true"></i> Ver Comentários</a>
+                        bool showEdit = post.AuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                        bool showDelete = post.AuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)) || User.IsInRole("ADMIN");
+
                         <div>
+                            @if (showEdit)
+                            {
                             <a asp-action="Edit" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
-                            <a asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este post?');"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
+                            }
+
+                            @if (showDelete)
+                            {
+                                <a asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este post?');"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
+                            }
                         </div>
-                    }
+
+                        @*                        @if (post.AuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+            {
+            bool showEdit = post.AuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            bool showDelete = post.AuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)) || User.IsInRole("ADMIN");
+
+            <div>
+            <a asp-action="Edit" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
+            <a asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este post?');"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
+            </div>
+            }
+            *@      }
                 </div>
             </div>
         }

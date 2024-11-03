@@ -8,28 +8,29 @@
     {
         <li class="nav-item">
             <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                <i class="fa fa-user-circle" aria-hidden="true"></i> <!-- Ícone de usuário -->
-                Olá @User.Identity?.Name!
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                @{
+                    var prefix = User.IsInRole("ADMIN") ? "[ADMIN] " : string.Empty;
+                }
+                Olá @prefix@User.Identity?.Name!
             </a>
         </li>
         <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Post", new { area = "" })">
+            @*<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Post", new { area = "" })">*@
+            <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout">
                 <button type="submit" class="nav-link btn btn-link text-light">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i> Sair <!-- Ícone de logout -->
+                    <i class="fa fa-sign-out" aria-hidden="true"></i> Sair 
                 </button>
             </form>
         </li>
     }
     else
     {
-        @*<li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>*@
         <li class="nav-item">
             <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Register">Novo Usuário</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Entrar</a>
         </li>
     }
 </ul>

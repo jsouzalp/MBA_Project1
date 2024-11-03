@@ -32,11 +32,11 @@ namespace Blog.Services.Helpers
             {
                 await context.Database.MigrateAsync();
                 await contextIdentity.Database.MigrateAsync();
-                await SeedDatabaseAsync(context, userManager);
+                await SeedDatabaseAsync(context, contextIdentity, userManager);
             }
         }
 
-        private static async Task SeedDatabaseAsync(BlogDbContext context, UserManager<IdentityUser> userManager)
+        private static async Task SeedDatabaseAsync(BlogDbContext context, ApplicationDbContext contextIdentity, UserManager<IdentityUser> userManager)
         {
             if (!context.Authors.Any())
             {
@@ -44,7 +44,6 @@ namespace Blog.Services.Helpers
                 Guid authorId1 = Guid.NewGuid();
                 Guid authorId2 = Guid.NewGuid();
 
-                //var user1 = new IdentityUser { Id = Guid.NewGuid().ToString(), UserName = "cath.lp@gmail.com", Email = "cath.lp@gmail.com", EmailConfirmed = true };
                 var user1 = new IdentityUser { UserName = "cath.lp@gmail.com", Email = "cath.lp@gmail.com", EmailConfirmed = true };
                 var result1 = await userManager.CreateAsync(user1, "123");
 
@@ -52,6 +51,25 @@ namespace Blog.Services.Helpers
                 {
                     authorId1 = Guid.Parse(user1.Id);
                 }
+
+                #region Criação de roles e associação ao user Cath
+                string roleId = Guid.NewGuid().ToString();
+                contextIdentity.Roles.Add(new IdentityRole
+                {
+                    Id = roleId,
+                    Name = "ADMIN",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = DateTime.Now.ToString()
+                });
+
+                contextIdentity.UserRoles.Add(new IdentityUserRole<string>()
+                {
+                    RoleId = roleId,
+                    UserId = authorId1.ToString()
+                });
+
+                await contextIdentity.SaveChangesAsync();
+                #endregion
 
                 //var user2 = new IdentityUser { Id = Guid.NewGuid().ToString(), UserName = "jsouza.lp@gmail.com", Email = "jsouza.lp@gmail.com", EmailConfirmed = true };
                 var user2 = new IdentityUser { UserName = "jsouza.lp@gmail.com", Email = "jsouza.lp@gmail.com", EmailConfirmed = true };

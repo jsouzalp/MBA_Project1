@@ -1,4 +1,3 @@
-using Blog.Api.Extensions;
 using Blog.AutoMapper.Extensions;
 using Blog.Bases.Settings;
 using Blog.Services.Extensions;
@@ -104,7 +103,6 @@ internal class Program
         }
 
         app.UseStaticFiles();
-        //app.UseMiddleware<RequestInterceptingMiddleware>();
         app.UseHttpsRedirection();
         app.UseRouting();
         app.UseAuthentication();

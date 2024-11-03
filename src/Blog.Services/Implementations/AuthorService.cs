@@ -1,26 +1,32 @@
 ﻿using AutoMapper;
+using Blog.Bases;
 using Blog.Bases.Services;
 using Blog.Entities.Authors;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Entities;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
+using Blog.Translations.Abstractions;
+using Blog.Translations.Constants;
 using Blog.Validations;
 using Blog.Validations.Abstractions;
+using Microsoft.AspNetCore.Http;
 
 namespace Blog.Services.Implementations
 {
-    public class AuthorService : IAuthorService
+    public class AuthorService : ServiceBase, IAuthorService
     {
         private readonly IAuthorRepository _repository;
         private readonly IValidationFactory<AuthorInput> _authorValidation;
         private readonly IValidationFactory<Guid> _idValidation;
         private readonly IMapper _mapper;
 
-        public AuthorService(IAuthorRepository repository, 
+        public AuthorService(IHttpContextAccessor httpContextAccessor,
+            ITranslationResource translationResource,
+            IAuthorRepository repository,
             IValidationFactory<AuthorInput> authorValidation,
             IValidationFactory<Guid> idValidation,
-            IMapper mapper)
+            IMapper mapper) : base(httpContextAccessor, translationResource)
         {
             _repository = repository;
             _authorValidation = authorValidation;
@@ -35,14 +41,17 @@ namespace Blog.Services.Implementations
 
             if (validation.Success)
             {
-                RepositoryOutput<Author> repositoryResult = await _repository.GetAuthorByIdAsync(id);
-                result.Message = repositoryResult.Message;
-                result.Output = _mapper.Map<AuthorOutput>(repositoryResult.Output);
-                result.Errors = repositoryResult.Errors;
+                if (ValidateOwnerOrAdmin(id, result))
+                {
+                    RepositoryOutput<Author> repositoryResult = await _repository.GetAuthorByIdAsync(id);
+                    result.Message = repositoryResult.Message;
+                    result.Output = _mapper.Map<AuthorOutput>(repositoryResult.Output);
+                    result.Errors = repositoryResult.Errors;
+                }
             }
             else
             {
-                result.Errors = validation.Errors;
+                if (validation.Errors != null) { result.Errors = validation.Errors; }
             }
 
             return result;
@@ -65,7 +74,7 @@ namespace Blog.Services.Implementations
             }
             else
             {
-                result.Errors = validation.Errors;
+                result.Errors = validation.Errors; 
             }
 
             return result;
@@ -77,13 +86,20 @@ namespace Blog.Services.Implementations
             ValidationOutput validation = await _authorValidation.ValidateAsync(input.Input);
             if (validation.Success)
             {
-                RepositoryOutput<Author> repositoryResult = await _repository.UpdateAuthorAsync(new RepositoryInput<Author>()
+                if (validation.Success && ValidateOwnerOrAdmin(input.Input.Id, result))
                 {
-                    Input = _mapper.Map<Author>(input.Input)
-                });
-                result.Message = repositoryResult.Message;
-                result.Output = _mapper.Map<AuthorOutput>(repositoryResult.Output);
-                result.Errors = repositoryResult.Errors;
+                    RepositoryOutput<Author> repositoryResult = await _repository.UpdateAuthorAsync(new RepositoryInput<Author>()
+                    {
+                        Input = _mapper.Map<Author>(input.Input)
+                    });
+                    result.Message = repositoryResult.Message;
+                    result.Output = _mapper.Map<AuthorOutput>(repositoryResult.Output);
+                    result.Errors = repositoryResult.Errors;
+                }
+                else
+                {
+                    if (validation.Errors != null) { result.Errors = validation.Errors; }
+                }
             }
             else
             {
@@ -100,10 +116,17 @@ namespace Blog.Services.Implementations
 
             if (validation.Success)
             {
-                RepositoryOutput<bool> repositoryResult = await _repository.RemoveAuthorAsync(id);
-                result.Message = repositoryResult.Message;
-                result.Output = repositoryResult.Output;
-                result.Errors = repositoryResult.Errors;
+                if (validation.Success && ValidateOwnerOrAdmin(id, result))
+                {
+                    RepositoryOutput<bool> repositoryResult = await _repository.RemoveAuthorAsync(id);
+                    result.Message = repositoryResult.Message;
+                    result.Output = repositoryResult.Output;
+                    result.Errors = repositoryResult.Errors;
+                }
+                else
+                {
+                    if (validation.Errors != null) { result.Errors = validation.Errors; }
+                }
             }
             else
             {

@@ -29,7 +29,8 @@
       "EmptyName": "Nome não pode ser vazio",
       "NullName": "Nome não pode ser nulo",
       "PostWithoutTitle": "Postagem(ns) possui título(s) não preenchido(s)",
-      "PostWithoutMessage": "Postagem(ns) possui mensagem(ns) não preenchida(s)"
+      "PostWithoutMessage": "Postagem(ns) possui mensagem(ns) não preenchida(s)",
+      "NotOwnerOrAdmin": "Não é possível executar esta operação pois não é o próprio Autor ou não tem privilégios necessários"
     },
     "Repository": {
       "Info": {

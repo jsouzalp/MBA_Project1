@@ -43,7 +43,7 @@ namespace Blog.Services.Implementations
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<ServiceOutput<AuthenticationOutput>> RegisterUserAsync(ServiceInput<AuthenticationInput> registerUser)
+        public async Task<ServiceOutput<AuthenticationOutput>> RegisterUserAsync(bool generateToken, ServiceInput<AuthenticationInput> registerUser)
         {
             ValidationOutput validation = await _authenticationValidation.ValidateAsync(registerUser.Input);
             ServiceOutput<AuthenticationOutput> result = new();
@@ -78,10 +78,13 @@ namespace Blog.Services.Implementations
 
                     if (resultAuthor.Success)
                     {
+                        await _signInManager.SignInAsync(user, isPersistent: true);
+
                         result.Output = new AuthenticationOutput()
                         {
+                            Id = Guid.Parse(user.Id),
                             Email = registerUser.Input.Email,
-                            AccessToken = await GenerateJwtAsync(registerUser.Input.Email)
+                            AccessToken = generateToken ? await GenerateJwtAsync(user) : string.Empty
                         };
                     }
                 }
@@ -103,18 +106,22 @@ namespace Blog.Services.Implementations
             return result;
         }
 
-        public async Task<ServiceOutput<AuthenticationOutput>> LoginUserAsync(ServiceInput<AuthenticationInput> loginUser)
+        public async Task<ServiceOutput<AuthenticationOutput>> LoginUserAsync(bool generateToken, ServiceInput<AuthenticationInput> loginUser)
         {
             ServiceOutput<AuthenticationOutput> result = new();
-            var resultIdentity = await _signInManager.PasswordSignInAsync(loginUser.Input.Email, loginUser.Input.Password, false, true);
+            var resultIdentity = await _signInManager.PasswordSignInAsync(loginUser.Input.Email, loginUser.Input.Password, true, false);
 
             if (resultIdentity.Succeeded)
             {
+                var user = await _userManager.FindByEmailAsync(loginUser.Input.Email);
+                await _signInManager.SignInAsync(user, isPersistent: true);
+
                 result.Message = _translationResource.GetResource(AuthenticationConstant.ServiceLoginSuccess);
                 result.Output = new AuthenticationOutput()
                 {
+                    Id = Guid.Parse(user.Id),
                     Email = loginUser.Input.Email,
-                    AccessToken = await GenerateJwtAsync(loginUser.Input.Email)
+                    AccessToken = generateToken ? await GenerateJwtAsync(user) : string.Empty
                 };
             }
             else
@@ -141,13 +148,13 @@ namespace Blog.Services.Implementations
             return result;
         }
 
-        private async Task<string> GenerateJwtAsync(string email)
+        private async Task<string> GenerateJwtAsync(IdentityUser user)
         {
-            var user = await _userManager.FindByEmailAsync(email);
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
             {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
@@ -162,6 +169,7 @@ namespace Blog.Services.Implementations
 
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
+                
                 Subject = new ClaimsIdentity(claims),
                 Issuer = _jwtSettings.Issuer,
                 Audience = _jwtSettings.Audience,

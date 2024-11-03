@@ -7,6 +7,7 @@
         public const string ValidationsAuthorNullName = "Autor.Validations.NullName";
         public const string ValidationsAuthorPostWithoutTitle = "Autor.Validations.PostWithoutTitle";
         public const string ValidationsAuthorPostWithoutMessage = "Autor.Validations.PostWithoutMessage";
+        public const string ValidationsAuthorNotOwnerOrAdmin = "Autor.Validations.NotOwnerOrAdmin";
         #endregion
 
         #region Repository

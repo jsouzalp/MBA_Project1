@@ -5,6 +5,7 @@ namespace Blog.Repositories.Abstractions
 {
     public interface IPostRepository
     {
+        Task<RepositoryOutput<Post>> GetInternalPostAsync(Guid id);
         Task<RepositoryOutput<IEnumerable<Post>>> FilterPostsAsync(RepositoryInput<FilterPostInput> input);
         Task<RepositoryOutput<Post>> GetPostAsync(Guid id);
         Task<RepositoryOutput<Post>> CreatePostAsync(RepositoryInput<Post> input);

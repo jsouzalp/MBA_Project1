@@ -5,12 +5,14 @@ using Blog.Repositories.Abstractions;
 using Blog.Repositories.Entities;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
+using Blog.Translations.Abstractions;
 using Blog.Validations;
 using Blog.Validations.Abstractions;
+using Microsoft.AspNetCore.Http;
 
 namespace Blog.Services.Implementations
 {
-    public class PostService : IPostService
+    public class PostService : ServiceBase, IPostService
     {
         private readonly IPostRepository _repository;
         private readonly IValidationFactory<PostInput> _postValidation;
@@ -18,11 +20,13 @@ namespace Blog.Services.Implementations
         private readonly IValidationFactory<Guid> _idValidation;
         private readonly IMapper _mapper;
 
-        public PostService(IPostRepository repository,
+        public PostService(IHttpContextAccessor httpContextAccessor,
+            ITranslationResource translationResource,
+            IPostRepository repository,
             IValidationFactory<PostInput> postValidation,
             IValidationFactory<FilterPostInput> filterPostValidation,
             IValidationFactory<Guid> idValidation,
-            IMapper mapper)
+            IMapper mapper) : base(httpContextAccessor, translationResource)
         {
             _repository = repository;
             _postValidation = postValidation;
@@ -61,10 +65,15 @@ namespace Blog.Services.Implementations
 
             if (validation.Success)
             {
-                RepositoryOutput<Post> repositoryResult = await _repository.GetPostAsync(id);
-                result.Message = repositoryResult.Message;
-                result.Output = _mapper.Map<PostOutput>(repositoryResult.Output);
-                result.Errors = repositoryResult.Errors;
+                //RepositoryOutput<Post> internalPost = await _repository.GetInternalPostAsync(id);
+
+                //if (ValidateOwnerOrAdmin(internalPost.Output.AuthorId, result))
+                {
+                    RepositoryOutput<Post> repositoryResult = await _repository.GetPostAsync(id);
+                    result.Message = repositoryResult.Message;
+                    result.Output = _mapper.Map<PostOutput>(repositoryResult.Output);
+                    result.Errors = repositoryResult.Errors;
+                }
             }
             else
             {
@@ -79,7 +88,7 @@ namespace Blog.Services.Implementations
             ServiceOutput<PostOutput> result = new();
             ValidationOutput validation = await _postValidation.ValidateAsync(input.Input);
 
-            if (validation.Success)
+            if (validation.Success && ValidateOwnerOrAdmin(input.Input.AuthorId, result))
             {
                 RepositoryOutput<Post> repositoryResult = await _repository.CreatePostAsync(new RepositoryInput<Post>()
                 {
@@ -91,7 +100,7 @@ namespace Blog.Services.Implementations
             }
             else
             {
-                result.Errors = validation.Errors;
+                if (validation.Errors != null) { result.Errors = validation.Errors; }
             }
 
             return result;
@@ -101,7 +110,8 @@ namespace Blog.Services.Implementations
         {
             ServiceOutput<PostOutput> result = new();
             ValidationOutput validation = await _postValidation.ValidateAsync(input.Input);
-            if (validation.Success)
+
+            if (validation.Success && ValidateOwnerOrAdmin(input.Input.AuthorId, result))
             {
                 RepositoryOutput<Post> repositoryResult = await _repository.UpdatePostAsync(new RepositoryInput<Post>()
                 {
@@ -113,7 +123,7 @@ namespace Blog.Services.Implementations
             }
             else
             {
-                result.Errors = validation.Errors;
+                if (validation.Errors != null) { result.Errors = validation.Errors; }
             }
 
             return result;
@@ -126,10 +136,15 @@ namespace Blog.Services.Implementations
 
             if (validation.Success)
             {
-                RepositoryOutput<bool> repositoryResult = await _repository.RemovePostAsync(id);
-                result.Message = repositoryResult.Message;
-                result.Output = repositoryResult.Output;
-                result.Errors = repositoryResult.Errors;
+                RepositoryOutput<Post> internalPost = await _repository.GetInternalPostAsync(id);
+
+                if (ValidateOwnerOrAdmin(internalPost.Output.AuthorId, result))
+                {
+                    RepositoryOutput<bool> repositoryResult = await _repository.RemovePostAsync(id);
+                    result.Message = repositoryResult.Message;
+                    result.Output = repositoryResult.Output;
+                    result.Errors = repositoryResult.Errors;
+                }
             }
             else
             {

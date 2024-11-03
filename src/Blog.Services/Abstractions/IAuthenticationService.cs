@@ -6,7 +6,7 @@ namespace Blog.Services.Abstractions
 {
     public interface IAuthenticationService
     {
-        Task<ServiceOutput<AuthenticationOutput>> RegisterUserAsync(ServiceInput<AuthenticationInput> registerUser);
-        Task<ServiceOutput<AuthenticationOutput>> LoginUserAsync(ServiceInput<AuthenticationInput> loginUser);
+        Task<ServiceOutput<AuthenticationOutput>> RegisterUserAsync(bool generateToken, ServiceInput<AuthenticationInput> registerUser);
+        Task<ServiceOutput<AuthenticationOutput>> LoginUserAsync(bool generateToken, ServiceInput<AuthenticationInput> loginUser);
     }
 }

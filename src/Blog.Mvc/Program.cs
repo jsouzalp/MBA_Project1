@@ -29,8 +29,9 @@ internal class Program
         builder.Services.AddTranslation();
         builder.Services.AddServices(databaseSettings);
         #endregion
-        
+
         builder.Services.AddControllersWithViews();
+        builder.Services.AddRazorPages();
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         var app = builder.Build();
 

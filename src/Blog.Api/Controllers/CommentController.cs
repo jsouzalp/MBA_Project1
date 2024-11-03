@@ -49,7 +49,6 @@ namespace Blog.Api.Controllers
             return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

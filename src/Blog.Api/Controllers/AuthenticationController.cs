@@ -26,7 +26,7 @@ namespace Blog.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ServiceOutput<AuthenticationOutput>>> RegisterUserAsync([FromBody] ServiceInput<AuthenticationInput> registerUser)
         {
-            var result = await _authenticationService.RegisterUserAsync(registerUser);
+            var result = await _authenticationService.RegisterUserAsync(true, registerUser);
             return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
@@ -37,7 +37,7 @@ namespace Blog.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ServiceOutput<AuthenticationOutput>>> LoginUserAsync([FromBody] ServiceInput<AuthenticationInput> loginUser)
         {
-            var result = await _authenticationService.LoginUserAsync(loginUser);
+            var result = await _authenticationService.LoginUserAsync(true, loginUser);
             return GenerateResponse(result, StatusCodes.Status200OK);
         }
     }

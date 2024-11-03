@@ -7,11 +7,119 @@
 	},
 	"item": [
 		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var accessToken = responseData.Output.AccessToken;\r",
+									"pm.collectionVariables.set(\"ApiAccessToken\", accessToken);\r",
+									"\r",
+									"var authorId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"AuthorId\", authorId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"FullName\": \"Catharina Oliveira 6\",\r\n    \"Email\": \"cath.lp6@gmail.com\",\r\n    \"Password\": \"123\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/auth/register",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var accessToken = responseData.Output.AccessToken;\r",
+									"pm.collectionVariables.set(\"ApiAccessToken\", accessToken);\r",
+									"\r",
+									"var authorId = responseData.Output.Id;\r",
+									"pm.collectionVariables.set(\"AuthorId\", authorId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Email\": \"jsouza.lp@gmail.com\",\r\n    \"Password\": \"123\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/auth/login",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Author",
 			"item": [
 				{
 					"name": "Delete Author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -37,6 +145,16 @@
 				{
 					"name": "Create Author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -65,11 +183,21 @@
 				{
 					"name": "Update Author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{AuthorId}}\",\r\n    \"Name\": \"Jairo Azevedo\",\r\n    \"Posts\": []\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{AuthorId}}\",\r\n    \"Name\": \"Jairo Azevedo 2\",\r\n    \"Posts\": []\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,6 +221,16 @@
 				{
 					"name": "Get Author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -121,45 +259,23 @@
 			"name": "Posts",
 			"item": [
 				{
-					"name": "Get Post",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{_BaseEndpoint}}/api/v1/post",
-							"host": [
-								"{{_BaseEndpoint}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"post"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "{{PostId}}",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Filter Post",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{_BaseEndpoint}}/api/v1/post?Page=1&RecordsPerPage=5",
+							"raw": "{{_BaseEndpoint}}/api/v1/post/filter?Page=1&RecordsPerPage=5",
 							"host": [
 								"{{_BaseEndpoint}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"post"
+								"post",
+								"filter"
 							],
 							"query": [
 								{
@@ -200,8 +316,11 @@
 							"script": {
 								"exec": [
 									"var responseData = pm.response.json();\r",
-									"var postId = responseData.Output.Id;\r",
-									"pm.collectionVariables.set(\"PostId\", postId);"
+									"if (responseData.Output != null)\r",
+									"{\r",
+									"  var postId = responseData.Output.Id;\r",
+									"  pm.collectionVariables.set(\"PostId\", postId);\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -209,6 +328,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -253,9 +382,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var responseData = pm.response.json();\r",
-									"var postId = responseData.Output.Id;\r",
-									"pm.collectionVariables.set(\"PostId\", postId);"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -263,11 +390,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Id\":\"{{PostId}}\",\r\n    \"AuthorId\": \"{{AuthorId}}\",\r\n    \"Title\": \"Postagem alterada de {{CurrentDate}}\",\r\n    \"Message\": \"Esta é uma mensagem alterada as {{CurrentDate}}\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\":\"{{PostId}}\",\r\n    \"AuthorId\": \"d027992a-577d-4463-9e22-428bdda7350c\", //\"{{AuthorId}}\",\r\n    \"Title\": \"Postagem alterada de {{CurrentDate}}\",\r\n    \"Message\": \"Esta é uma mensagem alterada as {{CurrentDate}}\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,6 +420,41 @@
 								"api",
 								"v1",
 								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/post?id={{PostId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{PostId}}"
+								}
 							]
 						}
 					},
@@ -317,6 +489,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -373,8 +555,11 @@
 							"script": {
 								"exec": [
 									"var responseData = pm.response.json();\r",
-									"var commentId = responseData.Output.Id;\r",
-									"pm.collectionVariables.set(\"CommentId\", commentId);"
+									"if (responseData.Output != null)\r",
+									"{\r",
+									"  var commentId = responseData.Output.Id;\r",
+									"  pm.collectionVariables.set(\"CommentId\", commentId);\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -382,6 +567,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -427,8 +622,11 @@
 							"script": {
 								"exec": [
 									"var responseData = pm.response.json();\r",
-									"var commentId = responseData.Output.Id;\r",
-									"pm.collectionVariables.set(\"CommentId\", commentId);"
+									"if (responseData.Output != null)\r",
+									"{\r",
+									"  var commentId = responseData.Output.Id;\r",
+									"  pm.collectionVariables.set(\"CommentId\", commentId);\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -436,11 +634,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{CommentId}}\",\r\n    \"PostId\": \"{{PostId}}\",\r\n    \"CommentAuthorId\": \"{{AuthorId}}\",\r\n    \"Message\": \"Comentário Alterado em {{CurrentDate}}\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{CommentId}}\",\r\n    \"PostId\": \"{{PostId}}\",\r\n    \"CommentAuthorId\": \"d027992a-577d-4463-9e22-428bdda7350c\", //\"{{AuthorId}}\",\r\n    \"Message\": \"Comentário Alterado em {{CurrentDate}}\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -456,6 +664,63 @@
 								"api",
 								"v1",
 								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_BaseEndpoint}}/api/v1/comment?id={{CommentId}}",
+							"host": [
+								"{{_BaseEndpoint}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{CommentId}}"
+								}
 							]
 						}
 					},
@@ -490,54 +755,17 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{_BaseEndpoint}}/api/v1/comment?id={{CommentId}}",
-							"host": [
-								"{{_BaseEndpoint}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"comment"
-							],
-							"query": [
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "id",
-									"value": "{{CommentId}}"
+									"key": "token",
+									"value": "{{ApiAccessToken}}",
+									"type": "string"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Comment",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
 						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{_BaseEndpoint}}/api/v1/comment?id={{CommentId}}",
@@ -613,6 +841,11 @@
 		{
 			"key": "CommentAuthorId",
 			"value": "4e7a3c4b-16ce-485f-bc30-0da09a6dfb3f",
+			"type": "string"
+		},
+		{
+			"key": "ApiAccessToken",
+			"value": "",
 			"type": "string"
 		}
 	]

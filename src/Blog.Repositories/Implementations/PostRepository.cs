@@ -12,17 +12,48 @@ using System.Transactions;
 
 namespace Blog.Repositories.Implementations
 {
-    public partial class PostRepository : IPostRepository
+    public partial class PostRepository : RepositoryBase, IPostRepository
     {
-        // TODO :: Colocar o tratamento de exception em um extension
-
         private readonly BlogDbContext _context;
-        private readonly ITranslationResource _translateResource;
 
         public PostRepository(BlogDbContext context, ITranslationResource translateResource)
+            : base(translateResource)
         {
             _context = context;
-            _translateResource = translateResource;
+        }
+
+        public async Task<RepositoryOutput<Post>> GetInternalPostAsync(Guid id)
+        {
+            RepositoryOutput<Post> result = new();
+            try
+            {
+                result.Output = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (result.Output != null)
+                {
+                    result.Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryPostSelect), id);
+                }
+                else
+                {
+                    result.Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryPostNotFound), id);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Errors = GenerateErrorInformation(ex, PostConstant.RepositorySelectError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(PostConstant.RepositorySelectError),
+                //        Message = string.Format(_translateResource.GetResource(PostConstant.RepositorySelectError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
+            }
+
+            return result;
         }
 
         public async Task<RepositoryOutput<IEnumerable<Post>>> FilterPostsAsync(RepositoryInput<FilterPostInput> input)
@@ -55,15 +86,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(PostConstant.RepositoryFilterPostError),
-                        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryFilterPostError), input?.Input?.AuthorId),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, PostConstant.RepositoryFilterPostError, new object[] { input?.Input?.AuthorId });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(PostConstant.RepositoryFilterPostError),
+                //        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryFilterPostError), input?.Input?.AuthorId),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -93,15 +126,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(PostConstant.RepositorySelectError),
-                        Message = string.Format(_translateResource.GetResource(PostConstant.RepositorySelectError), id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, PostConstant.RepositorySelectError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(PostConstant.RepositorySelectError),
+                //        Message = string.Format(_translateResource.GetResource(PostConstant.RepositorySelectError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -120,15 +155,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(PostConstant.RepositoryCreatePostError),
-                        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryCreatePostError), input.Input.Id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, PostConstant.RepositoryCreatePostError, new object[] { input.Input.Id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(PostConstant.RepositoryCreatePostError),
+                //        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryCreatePostError), input.Input.Id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -159,15 +196,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(PostConstant.RepositoryUpdatePostError),
-                        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryUpdatePostError), input.Input.Id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, PostConstant.RepositoryUpdatePostError, new object[] { input.Input.Id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(PostConstant.RepositoryUpdatePostError),
+                //        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryUpdatePostError), input.Input.Id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
@@ -184,7 +223,6 @@ namespace Blog.Repositories.Implementations
 
                 if (post != null)
                 {
-                    //using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     using (var transaction = await _context.Database.BeginTransactionAsync())
                     {
                         foreach (Comment comment in post.Comments)
@@ -208,15 +246,17 @@ namespace Blog.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                result.Errors = new List<ErrorBase>()
-                {
-                    new ErrorBase()
-                    {
-                        Code = _translateResource.GetCodeResource(PostConstant.RepositoryRemovePostError),
-                        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryRemovePostError), id),
-                        InternalMessage = ex.ToString()
-                    }
-                };
+                result.Errors = GenerateErrorInformation(ex, PostConstant.RepositoryRemovePostError, new object[] { id });
+
+                //result.Errors = new List<ErrorBase>()
+                //{
+                //    new ErrorBase()
+                //    {
+                //        Code = _translateResource.GetCodeResource(PostConstant.RepositoryRemovePostError),
+                //        Message = string.Format(_translateResource.GetResource(PostConstant.RepositoryRemovePostError), id),
+                //        InternalMessage = ex.ToString()
+                //    }
+                //};
             }
 
             return result;
