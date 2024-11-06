@@ -84,6 +84,7 @@ namespace Blog.Mvc.Controllers
             return View(postViewModel);
         }
 
+        [AllowAnonymous]
         public IActionResult Details(Guid id)
         {
             var post = _postService.GetPostAsync(id).Result;

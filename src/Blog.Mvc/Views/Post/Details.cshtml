@@ -29,45 +29,63 @@
                 <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Enviar Comentário</button>
             </div>
         </form>
-
-        <div class="card mt-4">
-            <div class="card-body">
-                <h2 class="card-title">@Model.Title</h2>
-                <h6 class="card-title">Feito em @Model.Date.ToString("dd/MM/yyyy HH:mm")</h6>
-                <p class="card-text">@Model.Message</p>
-            </div>
-        </div>
-
-        <h6 class="mt-4">Comentários</h6>
-
-        @if (Model.Comments != null && Model.Comments.Any())
-        {
-            @foreach (var comment in Model.Comments)
-            {
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h6 class="card-title">Autor: <cite title="Source Title">@comment.CommentAuthorName</cite></h6>
-                        <h6 class="card-title">Data: <cite title="Date Title">@comment.Date.ToString("dd/MM/yyyy HH:mm")</cite></h6>
-                        <p>@comment.Message</p>
-                        <div class="d-flex justify-content-end mt-2">
-                            @if (comment.CommentAuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
-                            {
-                                <a asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este comentário?');"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <p class="text-muted">Nenhum comentário para esta postagem.</p>
-        }
     }
     else
     {
         <div class="alert alert-warning" role="alert">
-            Você precisa estar <a asp-area="Identity" asp-page="/Account/Login">logado</a> para criar um comentário.
+            Você precisa estar <a asp-area="" asp-controller="Account" asp-action="Login">logado</a> para criar um comentário.
         </div>
+    }
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h2 class="card-title">@Model.Title</h2>
+            <h6 class="card-title">Feito em @Model.Date.ToString("dd/MM/yyyy HH:mm")</h6>
+            <p class="card-text">@Model.Message</p>
+        </div>
+    </div>
+
+    <h6 class="mt-4">Comentários</h6>
+
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">Autor: <cite title="Source Title">@comment.CommentAuthorName</cite></h6>
+                    <h6 class="card-title">Data: <cite title="Date Title">@comment.Date.ToString("dd/MM/yyyy HH:mm")</cite></h6>
+                    <p>@comment.Message</p>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="d-flex justify-content-end mt-2">
+                            @{
+                                bool showEdit = comment.CommentAuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)) || User.IsInRole("ADMIN");
+                                bool showDelete = comment.CommentAuthorId == Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)) || User.IsInRole("ADMIN");
+
+                                if (showEdit)
+                                {
+                                    <div>
+                                        <a asp-action="Edit" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-warning btn-sm me-2"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
+                                    </div>
+                                }
+
+                                @if (showDelete)
+                                {
+                                    <div>
+                                        <a asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este comentário?');"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted">Nenhum comentário para esta postagem.</p>
     }
 </div>

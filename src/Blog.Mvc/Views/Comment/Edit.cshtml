@@ -1,0 +1,36 @@
+﻿@model CommentViewModel
+
+@{
+    ViewData["Title"] = "Editar Comentário";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Editar Comentário</h2>
+    <h6 class="card-title">Autor do comentário: <cite title="Source Title">@Model.CommentAuthorName</cite></h6>
+    <h6 class="card-title">Data: <cite title="Date Title">@Model.Date.ToString("dd/MM/yyyy HH:mm")</cite></h6>
+
+    <form asp-action="Edit" method="post">
+        <div class="form-group mb-3">
+            <label asp-for="Message" class="control-label"></label>
+            <textarea asp-for="Message" class="form-control" rows="5" placeholder="Digite sua mensagem aqui..."></textarea>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PostId" />
+        <input type="hidden" asp-for="CommentAuthorId" />
+
+        <div class="text-end mb-4">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>
+            <a asp-action="Details" asp-controller="Post" asp-route-id="@Model.PostId" class="btn btn-secondary"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</a>
+        </div>
+    </form>
+
+    <div id="error-messages">
+        @await Html.PartialAsync("_ErrorMessages", ViewBag.ErrorMessages as IEnumerable<string> ?? new List<string>())
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

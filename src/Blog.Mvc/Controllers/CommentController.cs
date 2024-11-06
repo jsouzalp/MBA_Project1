@@ -1,5 +1,6 @@
 ﻿using Blog.Bases.Services;
 using Blog.Entities.Comments;
+using Blog.Entities.Posts;
 using Blog.Mvc.Models;
 using Blog.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -64,6 +65,55 @@ namespace Blog.Mvc.Controllers
             var result = _commentService.RemoveCommentAsync(id).Result;
 
             return RedirectToAction("Details", "Post", new { id = comment.Output.PostId });
+        }
+
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            var comment = _commentService.GetCommentAsync(id).Result;
+            if (comment == null || comment.Output == null || comment.Output.CommentAuthorId != Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+            {
+                return NotFound();
+            }
+
+            return View(new CommentViewModel()
+            {
+                Id = comment.Output.Id,
+                PostId = comment.Output.PostId,
+                CommentAuthorId = comment.Output.CommentAuthorId,
+                CommentAuthorName = comment.Output.CommentAuthorName, 
+                Date = comment.Output.Date,
+                Message = comment.Output.Message
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(CommentViewModel commentViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var result = _commentService.UpdateCommentAsync(new ServiceInput<CommentInput>()
+                {
+                    Input = new CommentInput()
+                    {
+                        Id = commentViewModel.Id,
+                        PostId = commentViewModel.PostId,
+                        CommentAuthorId = commentViewModel.CommentAuthorId,
+                        Message = commentViewModel.Message
+                    }
+                }).Result;
+
+                if (!result.Success && result.Errors.Any())
+                {
+                    // Armazena os erros na ViewBag
+                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
+                }
+            }
+
+            return RedirectToAction("Details", "Post", new { id = commentViewModel.PostId });
         }
     }
 }

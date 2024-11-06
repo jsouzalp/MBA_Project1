@@ -13,12 +13,12 @@ namespace Blog.Mvc.Models
         public DateTime Date { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [StringLength(100, MinimumLength = 5, ErrorMessage = "O campo {0} precisa ter entre {1} e {2} caracteres")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres")]
         [Display(Name = "Título do Post")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [StringLength(1024, MinimumLength = 1, ErrorMessage = "O campo {0} precisa ter entre {1} e {2} caracteres")]
+        [StringLength(1024, MinimumLength = 1, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres")]
         [Display(Name = "Mensagem")]
         public string Message { get; set; }
 
