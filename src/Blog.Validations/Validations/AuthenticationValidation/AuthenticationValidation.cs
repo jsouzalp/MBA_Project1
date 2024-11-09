@@ -1,5 +1,4 @@
 ﻿using Blog.Entities.Authentication;
-using Blog.Entities.Posts;
 using Blog.Translations.Abstractions;
 using Blog.Translations.Constants;
 using FluentValidation;

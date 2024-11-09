@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Blog.AutoMapper\Blog.AutoMapper.csproj" />
     <ProjectReference Include="..\Blog.Bases\Blog.Bases.csproj" />
     <ProjectReference Include="..\Blog.Repositories\Blog.Repositories.csproj" />
     <ProjectReference Include="..\Blog.Validations\Blog.Validations.csproj" />

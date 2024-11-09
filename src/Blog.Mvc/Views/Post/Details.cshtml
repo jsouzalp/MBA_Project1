@@ -1,21 +1,16 @@
 ﻿@using System.Security.Claims;
+@using Blog.Bases;
 @model PostViewModel
 
 @{
     ViewData["Title"] = "Detalhes da Postagem";
 }
 
-<div class="container mt-4">
+< class="container mt-4">
     <h2 class="text-center">Postagem e Comentários</h2>
-
-    <!-- Área para exibir erros -->
-    <div id="error-messages">
-        @await Html.PartialAsync("_ErrorMessages", ViewBag.ErrorMessages as IEnumerable<string> ?? new List<string>())
-    </div>
 
     @if (User.Identity.IsAuthenticated)
     {
-        <!-- Formulário para adicionar um novo comentário -->
         <form asp-action="Create" asp-controller="Comment" method="post" class="mt-3">
             <div class="form-group">
                 <h6>Adicionar Novo Comentário</h6>
@@ -23,7 +18,6 @@
                 <textarea id="newCommentMessage" name="Message" class="form-control" rows="4" required></textarea>
             </div>
 
-            <!-- Campo oculto para passar o PostId -->
             <input type="hidden" name="PostId" value="@Model.Id" />
             <div class="text-end mt-2">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Enviar Comentário</button>
@@ -37,13 +31,30 @@
         </div>
     }
 
-    <div class="card mt-4">
-        <div class="card-body">
-            <h2 class="card-title">@Model.Title</h2>
-            <h6 class="card-title">Feito em @Model.Date.ToString("dd/MM/yyyy HH:mm")</h6>
-            <p class="card-text">@Model.Message</p>
-        </div>
+    <div>
+        @if (ViewData["ErrorMessages"] is List<ErrorBase> errors && errors.Any())
+        {
+            if (errors != null && errors.Any())
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in errors)
+                    {
+                        <p>@error.Message</p>
+                    }
+                </div>
+            }
+        }
     </div>
+    @if (@Model != null && @Model.AuthorId != Guid.Empty)
+    {
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title">@Model.Title</h2>
+                <h6 class="card-title">Feito em @Model.Date.ToString("dd/MM/yyyy HH:mm")</h6>
+                <p class="card-text">@Model.Message</p>
+            </div>
+        </div>
+    }
 
     <h6 class="mt-4">Comentários</h6>
 

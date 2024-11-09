@@ -1,4 +1,5 @@
-﻿@model CommentViewModel
+﻿@using Blog.Bases;
+@model CommentViewModel
 
 @{
     ViewData["Title"] = "Editar Comentário";
@@ -19,6 +20,23 @@
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="PostId" />
         <input type="hidden" asp-for="CommentAuthorId" />
+        <input type="hidden" asp-for="CommentAuthorName" />
+        <input type="hidden" asp-for="Date" />
+
+        <div>
+            @if (ViewData["ErrorMessages"] is List<ErrorBase> errors && errors.Any())
+            {
+                if (errors != null && errors.Any())
+                {
+                    <div class="alert alert-danger">
+                        @foreach (var error in errors)
+                        {
+                            <p>@error.Message</p>
+                        }
+                    </div>
+                }
+            }
+        </div>
 
         <div class="text-end mb-4">
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>

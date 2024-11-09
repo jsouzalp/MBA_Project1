@@ -1,6 +1,5 @@
 ﻿using Blog.Bases.Services;
 using Blog.Entities.Comments;
-using Blog.Entities.Posts;
 using Blog.Mvc.Models;
 using Blog.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -38,16 +37,14 @@ namespace Blog.Mvc.Controllers
                     Input = new CommentInput()
                     {
                         PostId = commentViewModel.PostId,
-                        CommentAuthorId= commentViewModel.CommentAuthorId,
+                        CommentAuthorId = commentViewModel.CommentAuthorId,
                         Message = commentViewModel.Message
                     }
                 }).Result;
 
-                if (!result.Success && result.Errors.Any())
+                if (!result.Success)
                 {
-                    // Armazena os erros na ViewBag
-                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
-                    //return RedirectToAction("Details", "Post", commentViewModel);
+                    ViewData["ErrorMessages"] = result.Errors;
                 }
             }
 
@@ -64,6 +61,11 @@ namespace Blog.Mvc.Controllers
 
             var result = _commentService.RemoveCommentAsync(id).Result;
 
+            if (!result.Success)
+            {
+                ViewData["ErrorMessages"] = result.Errors;
+            }
+
             return RedirectToAction("Details", "Post", new { id = comment.Output.PostId });
         }
 
@@ -76,12 +78,17 @@ namespace Blog.Mvc.Controllers
                 return NotFound();
             }
 
+            if (!comment.Success)
+            {
+                ViewData["ErrorMessages"] = comment.Errors;
+            }
+
             return View(new CommentViewModel()
             {
                 Id = comment.Output.Id,
                 PostId = comment.Output.PostId,
                 CommentAuthorId = comment.Output.CommentAuthorId,
-                CommentAuthorName = comment.Output.CommentAuthorName, 
+                CommentAuthorName = comment.Output.CommentAuthorName,
                 Date = comment.Output.Date,
                 Message = comment.Output.Message
             });
@@ -106,14 +113,17 @@ namespace Blog.Mvc.Controllers
                     }
                 }).Result;
 
-                if (!result.Success && result.Errors.Any())
+                if (!result.Success)
                 {
-                    // Armazena os erros na ViewBag
-                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
+                    ViewData["ErrorMessages"] = result.Errors;
+                }
+                else
+                {
+                    return RedirectToAction("Details", "Post", new { id = commentViewModel.PostId });
                 }
             }
 
-            return RedirectToAction("Details", "Post", new { id = commentViewModel.PostId });
+            return View(commentViewModel);
         }
     }
 }

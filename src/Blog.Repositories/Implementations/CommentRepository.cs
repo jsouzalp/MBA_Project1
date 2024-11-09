@@ -1,5 +1,4 @@
-﻿using Blog.Bases;
-using Blog.Entities.Comments;
+﻿using Blog.Entities.Comments;
 using Blog.Repositories.Abstractions;
 using Blog.Repositories.Contexts;
 using Blog.Repositories.Entities;
@@ -39,16 +38,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositorySelectCommentError, new object[] { id });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositorySelectCommentError),
-                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositorySelectCommentError), id),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;
@@ -75,16 +64,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositorySelectCommentError, new object[] { id });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositorySelectCommentError),
-                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositorySelectCommentError), id),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;
@@ -104,16 +83,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositoryCreateCommentError, new object[] { input.Input.Id });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryCreateCommentError),
-                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryCreateCommentError), input.Input.Id),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;
@@ -145,16 +114,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositoryUpdateCommentError, new object[] { input.Input.Id });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryUpdateCommentError),
-                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryUpdateCommentError), input.Input.Id),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;
@@ -184,16 +143,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, CommentConstant.RepositoryRemoveCommentError, new object[] { id });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(CommentConstant.RepositoryRemoveCommentError),
-                //        Message = string.Format(_translateResource.GetResource(CommentConstant.RepositoryRemoveCommentError), id),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;

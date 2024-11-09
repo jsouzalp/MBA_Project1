@@ -1,5 +1,4 @@
 using Blog.Bases.Settings;
-using Blog.AutoMapper.Extensions;
 using Blog.Services.Extensions;
 using Blog.Translations.Extensions;
 using Blog.Services.Helpers;

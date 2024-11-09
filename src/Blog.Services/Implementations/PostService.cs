@@ -65,15 +65,10 @@ namespace Blog.Services.Implementations
 
             if (validation.Success)
             {
-                //RepositoryOutput<Post> internalPost = await _repository.GetInternalPostAsync(id);
-
-                //if (ValidateOwnerOrAdmin(internalPost.Output.AuthorId, result))
-                {
-                    RepositoryOutput<Post> repositoryResult = await _repository.GetPostAsync(id);
-                    result.Message = repositoryResult.Message;
-                    result.Output = _mapper.Map<PostOutput>(repositoryResult.Output);
-                    result.Errors = repositoryResult.Errors;
-                }
+                RepositoryOutput<Post> repositoryResult = await _repository.GetPostAsync(id);
+                result.Message = repositoryResult.Message;
+                result.Output = _mapper.Map<PostOutput>(repositoryResult.Output);
+                result.Errors = repositoryResult.Errors;
             }
             else
             {
@@ -138,12 +133,19 @@ namespace Blog.Services.Implementations
             {
                 RepositoryOutput<Post> internalPost = await _repository.GetInternalPostAsync(id);
 
-                if (ValidateOwnerOrAdmin(internalPost.Output.AuthorId, result))
+                if (internalPost.Success)
                 {
-                    RepositoryOutput<bool> repositoryResult = await _repository.RemovePostAsync(id);
-                    result.Message = repositoryResult.Message;
-                    result.Output = repositoryResult.Output;
-                    result.Errors = repositoryResult.Errors;
+                    if (ValidateOwnerOrAdmin(internalPost.Output.AuthorId, result))
+                    {
+                        RepositoryOutput<bool> repositoryResult = await _repository.RemovePostAsync(id);
+                        result.Message = repositoryResult.Message;
+                        result.Output = repositoryResult.Output;
+                        result.Errors = repositoryResult.Errors;
+                    }
+                }
+                else
+                {
+                    result.Errors = internalPost.Errors;
                 }
             }
             else

@@ -29,7 +29,11 @@ namespace Blog.Mvc.Controllers
 
             IEnumerable<PostViewModel> result = new List<PostViewModel>();
 
-            if (posts != null)
+            if (!posts.Success)
+            {
+                ViewData["ErrorMessages"] = posts.Errors;
+            }
+            else
             {
                 result = (from x in posts.Output
                           select new PostViewModel()
@@ -42,6 +46,7 @@ namespace Blog.Mvc.Controllers
                               Message = x.Message
                           }).ToList();
             }
+
             return View(result);
         }
 
@@ -58,8 +63,8 @@ namespace Blog.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-                postViewModel.AuthorId = Guid.Parse(userId); 
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                postViewModel.AuthorId = Guid.Parse(userId);
 
                 var result = _postService.CreatePostAsync(new ServiceInput<PostInput>()
                 {
@@ -71,14 +76,14 @@ namespace Blog.Mvc.Controllers
                     }
                 }).Result;
 
-                if (!result.Success && result.Errors.Any())
+                if (!result.Success)
                 {
-                    // Armazena os erros na ViewBag
-                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
-                    return View(postViewModel);
+                    ViewData["ErrorMessages"] = result.Errors;
                 }
-
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View(postViewModel);
@@ -87,57 +92,58 @@ namespace Blog.Mvc.Controllers
         [AllowAnonymous]
         public IActionResult Details(Guid id)
         {
+            var postDetailsViewModel = new PostViewModel();
             var post = _postService.GetPostAsync(id).Result;
 
-            if (post == null || !post.Success)
+            if (!post.Success)
             {
-                return NotFound();
+                ViewData["ErrorMessages"] = post.Errors;
             }
-
-            var postDetailsViewModel = new PostViewModel
+            else
             {
-                Id = post.Output.Id,
-                AuthorId = post.Output.AuthorId,
-                AuthorName = post.Output.AuthorName,
-                Date = post.Output.Date,
-                Title = post.Output.Title,  
-                Message = post.Output.Message,
-                Comments = (from x in post.Output.Comments
-                            select new CommentViewModel()
-                            {
-                                Id = x.Id, 
-                                PostId = x.PostId,
-                                CommentAuthorId = x.CommentAuthorId,
-                                CommentAuthorName = x.CommentAuthorName,
-                                Date = x.Date,
-                                Message = x.Message
-                            }).ToList()
-            };
+                postDetailsViewModel.Id = post.Output.Id;
+                postDetailsViewModel.AuthorId = post.Output.AuthorId;
+                postDetailsViewModel.AuthorName = post.Output.AuthorName;
+                postDetailsViewModel.Date = post.Output.Date;
+                postDetailsViewModel.Title = post.Output.Title;
+                postDetailsViewModel.Message = post.Output.Message;
+                postDetailsViewModel.Comments = (from x in post.Output.Comments
+                                                 select new CommentViewModel()
+                                                 {
+                                                     Id = x.Id,
+                                                     PostId = x.PostId,
+                                                     CommentAuthorId = x.CommentAuthorId,
+                                                     CommentAuthorName = x.CommentAuthorName,
+                                                     Date = x.Date,
+                                                     Message = x.Message
+                                                 }).ToList();
+            }
 
             return View(postDetailsViewModel);
         }
 
         public IActionResult Edit(Guid id)
         {
+            PostViewModel result = new PostViewModel();
             var post = _postService.GetPostAsync(id).Result;
+
             if (post == null)
             {
                 return NotFound();
             }
 
-            PostViewModel result = new PostViewModel();
-
-            if (post != null && post.Success)
+            if (!post.Success)
             {
-                result = new PostViewModel()
-                {
-                    Id = post.Output.Id,
-                    AuthorId = post.Output.AuthorId,
-                    AuthorName = post.Output.AuthorName,
-                    Date = post.Output.Date,
-                    Title = post.Output.Title,
-                    Message = post.Output.Message
-                };
+                ViewData["ErrorMessages"] = post.Errors;
+            }
+            else
+            {
+                result.Id = post.Output.Id;
+                result.AuthorId = post.Output.AuthorId;
+                result.AuthorName = post.Output.AuthorName;
+                result.Date = post.Output.Date;
+                result.Title = post.Output.Title;
+                result.Message = post.Output.Message;                
             }
 
             return View(result);
@@ -150,7 +156,7 @@ namespace Blog.Mvc.Controllers
             if (ModelState.IsValid)
             {
                 var result = _postService.UpdatePostAsync(new ServiceInput<PostInput>()
-                {                    
+                {
                     Input = new PostInput()
                     {
                         Id = postViewModel.Id,
@@ -160,13 +166,14 @@ namespace Blog.Mvc.Controllers
                     }
                 }).Result;
 
-                if (!result.Success && result.Errors.Any())
+                if (!result.Success)
                 {
-                    ViewBag.ErrorMessages = result.Errors.Select(x => x.Message).ToList();
-                    return View(postViewModel);
+                    ViewData["ErrorMessages"] = result.Errors;
                 }
-
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View(postViewModel);
@@ -174,7 +181,6 @@ namespace Blog.Mvc.Controllers
 
         public IActionResult Delete(Guid id)
         {
-            var post = _postService.GetPostAsync(id).Result;
             var result = _postService.RemovePostAsync(id).Result;
             return RedirectToAction(nameof(Index));
         }

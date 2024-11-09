@@ -9,6 +9,7 @@ using Blog.Validations.Validations.AuthorValidation;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Blog.Services.AutoMapper;
 
 namespace Blog.Services.Extensions
 {
@@ -19,6 +20,7 @@ namespace Blog.Services.Extensions
             services.AddValidationFactory();
             services.AddValidatorsFromAssemblyContaining<AuthorValidation>();
             services.AddRepositories(databaseSettings);
+            services.AddMappings();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
@@ -48,6 +50,15 @@ namespace Blog.Services.Extensions
                     ValidIssuer = jwtSettings.Issuer
                 };
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddMappings(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AuthorProfile));
+            services.AddAutoMapper(typeof(PostProfile));
+            services.AddAutoMapper(typeof(CommentProfile));
 
             return services;
         }

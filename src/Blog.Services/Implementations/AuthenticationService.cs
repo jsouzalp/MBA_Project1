@@ -14,7 +14,6 @@ using System.Security.Claims;
 using System.Text;
 using Blog.Translations.Constants;
 using Blog.Validations.Abstractions;
-using Blog.Validations.Validations.AuthorValidation;
 using Blog.Validations;
 
 namespace Blog.Services.Implementations
@@ -52,7 +51,6 @@ namespace Blog.Services.Implementations
             {
                 var user = new IdentityUser()
                 {
-                    //Id = Guid.NewGuid().ToString(),
                     UserName = registerUser.Input.Email,
                     Email = registerUser.Input.Email,
                     NormalizedUserName = registerUser.Input.FullName,
@@ -126,7 +124,7 @@ namespace Blog.Services.Implementations
             }
             else
             {
-                ErrorBase error = new ErrorBase();
+                ErrorBase error = new();
                 if (resultIdentity.IsNotAllowed)
                 {
                     error.Code = _translationResource.GetCodeResource(AuthenticationConstant.ServiceLoginNotAllowed);

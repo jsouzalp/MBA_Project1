@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Blog.Bases;
 using Blog.Bases.Services;
 using Blog.Entities.Authors;
 using Blog.Repositories.Abstractions;
@@ -7,7 +6,6 @@ using Blog.Repositories.Entities;
 using Blog.Services.Abstractions;
 using Blog.Services.Entities;
 using Blog.Translations.Abstractions;
-using Blog.Translations.Constants;
 using Blog.Validations;
 using Blog.Validations.Abstractions;
 using Microsoft.AspNetCore.Http;

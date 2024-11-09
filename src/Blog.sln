@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Repositories", "Blog.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Validations", "Blog.Validations\Blog.Validations.csproj", "{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.AutoMapper", "Blog.AutoMapper\Blog.AutoMapper.csproj", "{AB5326D6-8D92-4B8A-AF44-19F388D1322F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Translations", "Blog.Translations\Blog.Translations.csproj", "{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".helpers", ".helpers", "{64BB97DA-C3D9-4B2C-9D3D-85440F6419C4}"
@@ -65,10 +63,6 @@ Global
 		{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A3016FA-D06C-4C60-B1DE-AA59ACAAC8AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB5326D6-8D92-4B8A-AF44-19F388D1322F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B429FE-5D9C-4BAE-9D28-F222CBE68C66}.Release|Any CPU.ActiveCfg = Release|Any CPU

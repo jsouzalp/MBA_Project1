@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Entities.Posts;
 
-namespace Blog.AutoMapper.Mappings
+namespace Blog.Services.AutoMapper
 {
     public class PostProfile : Profile
     {

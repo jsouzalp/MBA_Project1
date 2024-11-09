@@ -1,5 +1,4 @@
-﻿using Blog.Bases;
-using Blog.Entities.Authors;
+﻿using Blog.Entities.Authors;
 using Blog.Entities.Comments;
 using Blog.Entities.Posts;
 using Blog.Repositories.Abstractions;
@@ -9,8 +8,6 @@ using Blog.Repositories.Extensions;
 using Blog.Translations.Abstractions;
 using Blog.Translations.Constants;
 using Microsoft.EntityFrameworkCore;
-using System.Transactions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Blog.Repositories.Implementations
 {
@@ -29,8 +26,7 @@ namespace Blog.Repositories.Implementations
             RepositoryOutput<Author> result = new();
             try
             {
-                result.Output = await _context.Authors
-                    .FirstOrDefaultAsync(x => x.Id == id);
+                result.Output = await _context.Authors.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (result.Output != null)
                 {
@@ -63,15 +59,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryInsertAuthorError, new object[] { input.Input.Name });
-
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryInsertAuthorError),
-                //        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryInsertAuthorError), input.Input.Name),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;
@@ -104,16 +91,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryUpdateAuthorError, new object[] { input.Input.Name });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryUpdateAuthorError),
-                //        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryUpdateAuthorError), input.Input.Name),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;
@@ -130,7 +107,6 @@ namespace Blog.Repositories.Implementations
 
                 if (author != null)
                 {
-                    //using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     using (var transaction = await _context.Database.BeginTransactionAsync())
                     {
                         foreach (Post post in author.Posts)
@@ -145,7 +121,6 @@ namespace Blog.Repositories.Implementations
                         _ = await _context.SaveChangesAsync();
 
                         await transaction.CommitAsync();
-                        //transaction.Complete();
                         result.Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryAuthorRemoved), author.Name);
                         result.Output = true;
                     }
@@ -159,16 +134,6 @@ namespace Blog.Repositories.Implementations
             catch (Exception ex)
             {
                 result.Errors = GenerateErrorInformation(ex, AuthorConstant.RepositoryRemoveAuthorError, new object[] { id });
-
-                //result.Errors = new List<ErrorBase>()
-                //{
-                //    new ErrorBase()
-                //    {
-                //        Code = _translateResource.GetCodeResource(AuthorConstant.RepositoryRemoveAuthorError),
-                //        Message = string.Format(_translateResource.GetResource(AuthorConstant.RepositoryRemoveAuthorError), id),
-                //        InternalMessage = ex.ToString()
-                //    }
-                //};
             }
 
             return result;

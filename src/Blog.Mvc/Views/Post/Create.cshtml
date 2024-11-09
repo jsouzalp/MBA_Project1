@@ -1,4 +1,5 @@
-﻿@model PostViewModel
+﻿@using Blog.Bases;
+@model PostViewModel
 
 @{
     ViewData["Title"] = "Nova Postagem";
@@ -20,8 +21,22 @@
             <span asp-validation-for="Message" class="text-danger"></span>
         </div>
 
+        <div>
+            @if (ViewData["ErrorMessages"] is List<ErrorBase> errors && errors.Any())
+            {
+                if (errors != null && errors.Any())
+                {
+                    <div class="alert alert-danger">
+                        @foreach (var error in errors)
+                        {
+                            <p>@error.Message</p>
+                        }
+                    </div>
+                }
+            }
+        </div>
+
         <div class="form-group text-end mt-4">
-            <!-- Alteração aqui para alinhar os botões à direita -->
             <button type="submit" class="btn btn-success"> 
                 <i class="fa fa-floppy-o" aria-hidden="true"></i> Publicar
             </button>
@@ -29,10 +44,6 @@
             <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</a>
         </div>
     </form>
-
-    <div id="error-messages">
-        @await Html.PartialAsync("_ErrorMessages", ViewBag.ErrorMessages as IEnumerable<string> ?? new List<string>())
-    </div>
 </div>
 
 @section Scripts {

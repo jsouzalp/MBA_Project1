@@ -1,18 +1,10 @@
 ﻿using Blog.Bases;
-using Blog.Bases.Constants;
-using Blog.Entities.Authors;
 using Blog.Services.Entities;
 using Blog.Translations.Abstractions;
 using Blog.Translations.Constants;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Services.Implementations
 {

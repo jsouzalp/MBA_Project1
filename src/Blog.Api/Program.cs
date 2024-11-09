@@ -1,4 +1,3 @@
-using Blog.AutoMapper.Extensions;
 using Blog.Bases.Settings;
 using Blog.Services.Extensions;
 using Blog.Services.Helpers;
@@ -29,7 +28,6 @@ internal class Program
 
         #region Extended Services configuration
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddMappings();
         builder.Services.AddTranslation();
         builder.Services.AddServices(databaseSettings);
         builder.Services.AddJwtConfiguration(jwtSettings);
@@ -84,7 +82,7 @@ internal class Program
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
         });

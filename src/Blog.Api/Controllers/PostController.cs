@@ -31,6 +31,7 @@ namespace Blog.Api.Controllers
             return GenerateResponse(result, StatusCodes.Status200OK);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

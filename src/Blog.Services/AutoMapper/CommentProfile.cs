@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Entities.Comments;
 
-namespace Blog.AutoMapper.Mappings
+namespace Blog.Services.AutoMapper
 {
     public class CommentProfile : Profile
     {
