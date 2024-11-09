@@ -15,7 +15,6 @@ O projeto consiste em:
 - **Blog.Api:** WebAPI que oferece uma coleção de métodos para integração com outros tipos de dispositivos, desde que autenticado
 - **Blog.Services:** Camada de serviços responsável por realizar consultas, validações e persistência dos dados coletados
 - **Blog.Repositories:** Camada de repositório das informações que faz uso do ORM Entity Framework Core
-- **Blog.AutoMapper:** Camada de mapeamento das entidades utilizadas no projeto
 - **Blog.Translations:** Camada intermediária responsável por obter as traduções/recursos de mensagens apresentadas pelo sistema
 - **Blog.Validations:** Camada responsável por realizar as validações na camada de serviços.
 - **Autenticação e Autorização:** Implementação de controle de acesso.
@@ -43,12 +42,12 @@ O projeto consiste em:
 ## **4. Estrutura do Projeto**
 A estrutura do projeto é organizada da seguinte forma:
 
+- data/
 - docs/
 - scripts/
 - src/
   - .Settings/ - Arquivos de settings (compartilhados com os projetos de API e WEB)
   - Blog.Api/ 
-  - Blog.AutoMapper/ 
   - Blog.Bases/
   - Blog.Entities/
   - Blog.Repositories/
@@ -67,6 +66,7 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ## **6. Como Executar o Projeto**
 Para criação da estrutura de dados, é necessário localizar o arquivo *DatabaseSettings.json* e configurar nele a string de conexão. Após configurado, deve ser executado o migrations para criação da estrutura de tabelas:
+Como esta aplicação está usando o SQLite, um database será criado automaticamente quando em ambiente de desenvolvimento e executada a aplicação (API ou WEB)
 
 ## **Extensions do Visual Studio**
 - Para visualização dos dados na base de dados criada (verifique a pasta ".\data") pelo Visual Studio, é necessária a instalação da extension "SQLite/SQL Server Compact Toolbox"
@@ -75,7 +75,7 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
 ### **Pré-requisitos**
 - .NET SDK 6.0 ou superior
 - SQLite
-- Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
+- Visual Studio 2022
 - Git
 
 ### **Passos para Execução**
@@ -84,7 +84,7 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
 
 2. **Configuração do Banco de Dados:**
    - No arquivo `DatabaseSettings.json`, configure a string de conexão do SQLite para o database *ConnectionStringBlog*.
-   - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
+   - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos na pasta .\data
    - Instalar o dotnet ef (caso não tenha feito ainda):
      - dotnet tool install --global dotnet-ef
    - Para executar o migration:
@@ -123,7 +123,11 @@ Para criação da estrutura de dados, é necessário localizar o arquivo *Databa
 ## **8. Documentação da API**
 A documentação da API está disponível através do Swagger. Após iniciar a API, acesse a documentação em: http://localhost:5001/swagger
 
-## **9. Avaliação**
+## **9. Testes da API**
+Na pasta .\docs existe o arquivo "MBA - Project1.postman_collection.json" que pode ser importado para o Postman e executados os endpoints de acordo com a sua necessidade.
+Para os endpoints que necessitam de autorização, recomendo que seja feito primeiro um login ou novo registro (pasta Authentication).
+
+## **10. Avaliação**
 - Este projeto é parte de um curso acadêmico e não aceita contribuições externas. 
 - Para feedbacks ou dúvidas utilize o recurso de Issues
 - O arquivo `FEEDBACK.md` é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.

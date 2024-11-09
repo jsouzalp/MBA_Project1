@@ -33,7 +33,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"FullName\": \"Catharina Oliveira 6\",\r\n    \"Email\": \"cath.lp6@gmail.com\",\r\n    \"Password\": \"123\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"FullName\": \"Catharina Oliveira 6\",\r\n    \"Email\": \"cath.lp8@gmail.com\",\r\n    \"Password\": \"123\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -80,7 +80,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Email\": \"jsouza.lp@gmail.com\",\r\n    \"Password\": \"123\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Email\": \"cath.lp@gmail.com\",\r\n    \"Password\": \"123\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -197,7 +197,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{AuthorId}}\",\r\n    \"Name\": \"Jairo Azevedo 2\",\r\n    \"Posts\": []\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{AuthorId}}\",\r\n    \"Name\": \"JCath Oli 2\",\r\n    \"Posts\": []\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -404,7 +404,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Id\":\"{{PostId}}\",\r\n    \"AuthorId\": \"d027992a-577d-4463-9e22-428bdda7350c\", //\"{{AuthorId}}\",\r\n    \"Title\": \"Postagem alterada de {{CurrentDate}}\",\r\n    \"Message\": \"Esta é uma mensagem alterada as {{CurrentDate}}\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\":\"{{PostId}}\",\r\n    \"AuthorId\": \"{{AuthorId}}\",\r\n    \"Title\": \"Postagem alterada de {{CurrentDate}}\",\r\n    \"Message\": \"Esta é uma mensagem alterada as {{CurrentDate}}\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -479,9 +479,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var responseData = pm.response.json();\r",
-									"var postId = responseData.Output.Id;\r",
-									"pm.collectionVariables.set(\"PostId\", postId);"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -621,12 +619,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var responseData = pm.response.json();\r",
-									"if (responseData.Output != null)\r",
-									"{\r",
-									"  var commentId = responseData.Output.Id;\r",
-									"  pm.collectionVariables.set(\"CommentId\", commentId);\r",
-									"}"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -648,7 +641,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{CommentId}}\",\r\n    \"PostId\": \"{{PostId}}\",\r\n    \"CommentAuthorId\": \"d027992a-577d-4463-9e22-428bdda7350c\", //\"{{AuthorId}}\",\r\n    \"Message\": \"Comentário Alterado em {{CurrentDate}}\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"Input\": {\r\n    \"Id\": \"{{CommentId}}\",\r\n    \"PostId\": \"{{PostId}}\",\r\n    \"CommentAuthorId\": \"{{AuthorId}}\",\r\n    \"Message\": \"Comentário Alterado em {{CurrentDate}}\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -733,9 +726,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"var now = new Date();\r",
-									"var timestamp = now.toISOString();\r",
-									"pm.environment.set(\"CurrentDate\", timestamp);"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -745,9 +736,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var responseData = pm.response.json();\r",
-									"var commentId = responseData.Output.Id;\r",
-									"pm.collectionVariables.set(\"CommentId\", commentId);"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
