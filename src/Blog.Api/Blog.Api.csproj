@@ -41,8 +41,4 @@
     <ProjectReference Include="..\Blog.Translations\Blog.Translations.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
 </Project>

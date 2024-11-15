@@ -1,4 +1,5 @@
-﻿using Blog.Entities.Authors;
+﻿using Blog.Bases.Settings;
+using Blog.Entities.Authors;
 using Blog.Entities.Comments;
 using Blog.Entities.Posts;
 using Blog.Repositories.Contexts;
@@ -167,5 +168,5 @@ namespace Blog.Services.Helpers
                 #endregion
             }
         }
-    }
+    } 
 }
